@@ -1,0 +1,21 @@
+includeTargets << gant.targets.Clean
+taskdef(name: 'groovyc',  classname: 'org.codehaus.groovy.ant.Groovyc')
+
+target compile: 'Compiles koans', {
+    mkdir dir: "${basedir}/target"
+    groovyc srcdir: "${basedir}/src", destdir: "${basedir}/target"
+}
+
+target walk: 'Executes koans', {
+    depends compile
+    junit {
+        classpath {
+            pathelement location: "${basedir}/target"
+        }
+        test name: 'MetaKoans'
+
+    }
+
+}
+
+setDefaultTarget(walk)
