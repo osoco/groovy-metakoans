@@ -5,23 +5,21 @@ import org.junit.runner.Description
 import org.junit.runner.notification.RunNotifier
 import org.junit.runner.notification.RunListener
 import org.junit.runner.notification.Failure
+import static java.lang.String.format
+import org.junit.runner.notification.StoppedByUserException
 
-/*
-TODO:
-    - print the progress bar
-    - print zen encouragements
-    - move messages to external templates
- */
-
+// TODO print zen encouragements
+// TODO move messages to external templates
+// TODO print stack traces on demand
 class ProgressIO {
     private static final FILE_NAME = '.progress'
 
-    def readProgress() {
+    int readProgress() {
         def f = new File(FILE_NAME)
         f.exists() ? f.text as Integer : 0
     }
 
-    def writeProgress(progress) {
+    def writeProgress(int progress) {
         def f = new File(FILE_NAME)
         if (!f.exists()) f.createNewFile()
         f.text = progress
@@ -30,7 +28,7 @@ class ProgressIO {
 
 class MessageRenderer {
 
-    def printWelcomeMessage(koanCount) {
+    def printWelcomeMessage(int koanCount) {
         println """
 Groovy MetaProgramming Koans
 ${koanCount} tough questions are waiting for you...
@@ -54,19 +52,48 @@ You reached the enlightment
     }
 }
 
+class ProgressBarRenderer {
+    private static final CONSOLE_WIDTH = 80
+    private static final PROGRESS_LINE_START = '['
+    private static final PROGRESS_LINE_END = ']'
+    private static final COMPLETED_CHAR = '+'
+    private static final REMAINING_CHAR = '-'
+
+    def printProgressBar(int completed, int total) {
+        def percentageCompleted = format('%3d%%', percentage(completed, total))
+
+        def progressLineWidth = CONSOLE_WIDTH - (PROGRESS_LINE_START.length() + PROGRESS_LINE_END.length()) -
+            percentageCompleted.length()
+        def completedCharCount = Math.round(completed / total * progressLineWidth)
+        def remainingCharCount = progressLineWidth - completedCharCount
+
+        printFormattedProgressBar(completedCharCount, remainingCharCount, percentageCompleted)
+    }
+
+    private printFormattedProgressBar(completedCharCount, remainingCharCount, percentageCompleted) {
+        println """
+${PROGRESS_LINE_START}${COMPLETED_CHAR * completedCharCount}${REMAINING_CHAR * remainingCharCount}${PROGRESS_LINE_END} ${percentageCompleted}
+"""
+    }
+
+    private percentage(part, total) {
+        Math.round part / total * 100
+    }
+}
+
 class Sensei extends RunListener {
     private RunNotifier notifier
     private ProgressIO progressIO = new ProgressIO()
     private MessageRenderer messageRenderer = new MessageRenderer()
-    private koanCount
-    private koansPassed = 0
-    private progress
-    private failed = false
+    private int totalKoans
+    private int koansPassed = 0
+    private int progress
+    private boolean failed = false
     private boolean isSuccess() { !failed }
-    private lastFailure
+    private Failure lastFailure
 
-    Sensei(koanCount, RunNotifier notifier) {
-        this.koanCount = koanCount
+    Sensei(int totalKoans, RunNotifier notifier) {
+        this.totalKoans = totalKoans
         this.notifier = notifier
     }
 
@@ -75,11 +102,11 @@ class Sensei extends RunListener {
     }
 
     def printWelcomeMessage() {
-        messageRenderer.printWelcomeMessage(koanCount)
+        messageRenderer.printWelcomeMessage(totalKoans)
     }
 
     def printFinalMessageIfCompleted() {
-        if (koanCount == koansPassed) {
+        if (totalKoans == koansPassed) {
             messageRenderer.printFinalMessage()
         }
     }
@@ -116,6 +143,10 @@ class Sensei extends RunListener {
         messageRenderer.printFailureMessage(lastFailure)
         notifier.pleaseStop()
     }
+
+    def printProgressBar() {
+        new ProgressBarRenderer().printProgressBar(koansPassed, totalKoans)
+    }
 }
 
 class KoansSuite extends Suite {
@@ -147,8 +178,12 @@ class KoansSuite extends Suite {
         sensei.printWelcomeMessage()
 
         notifier.addListener(sensei)
-        super.run(notifier)
-
-        sensei.printFinalMessageIfCompleted()
+        try {
+            super.run(notifier)
+        } catch (StoppedByUserException e) {
+        } finally {
+            sensei.printProgressBar()
+            sensei.printFinalMessageIfCompleted()
+        }
     }
 }
