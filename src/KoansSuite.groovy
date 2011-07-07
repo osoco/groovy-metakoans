@@ -9,6 +9,7 @@ import static java.lang.String.format
 import org.junit.runner.notification.StoppedByUserException
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
+import org.codehaus.groovy.runtime.StackTraceUtils
 
 // TODO limit the number of stack trace lines
 // TODO less messages from Gant?
@@ -59,6 +60,7 @@ class MessageRenderer {
     }
 
     def printFailureMessage(Failure failure, boolean trace) {
+        StackTraceUtils.sanitize(failure.exception)
         def binding = [failure: failure, trace: trace]
         println failureMessageTmpl.make(binding)
     }
