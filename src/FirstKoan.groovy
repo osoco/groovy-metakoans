@@ -11,6 +11,6 @@ class FirstKoan {
 
     @Test
     void "first koan, second question"() {
-        assertThat('koans are the way to enlightment', containsString('enlightment'))
+        assertThat('koans are the way to enlightment', containsString('enlightment2'))
     }
 }

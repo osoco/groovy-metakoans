@@ -10,7 +10,7 @@ import org.junit.runner.notification.StoppedByUserException
 import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 
-// TODO print stack traces on demand
+// TODO limit the number of stack trace lines
 // TODO less messages from Gant?
 class ProgressIO {
     private static final FILE_NAME = '.progress'
@@ -162,11 +162,8 @@ class Sensei extends RunListener {
     private onKoanFailure() {
         def trace = System.getProperty('trace') != null
         messageRenderer.printFailureMessage(lastFailure, trace)
-        notifier.pleaseStop()
-    }
-
-    def printEncouragement() {
         messageRenderer.printEncouragement()
+        notifier.pleaseStop()
     }
 
     def printProgressBar() {
@@ -207,7 +204,6 @@ class KoansSuite extends Suite {
             super.run(notifier)
         } catch (StoppedByUserException e) {
         } finally {
-            sensei.printEncouragement()
             sensei.printProgressBar()
             sensei.printFinalMessageIfCompleted()
         }
