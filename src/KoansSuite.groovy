@@ -5,47 +5,35 @@ import org.junit.runner.Description
 import org.junit.runner.notification.RunNotifier
 import org.junit.runner.notification.RunListener
 import org.junit.runner.notification.Failure
-import com.sun.org.apache.bcel.internal.generic.AALOAD
 
 /*
 TODO:
-    - print the last failure
-    - prin the progress bar
-    - print a beautiful final message if all koans are completed
+    - print the progress bar
     - print zen encouragements
+    - move messages to external templates
  */
-class Sensei extends RunListener {
-    private Runner runner
-    private RunNotifier notifier
-    private passCount = 0
-    private progress
-    private failed = false
-    private boolean isSuccess() { !failed }
-    private lastFailure
 
-    Sensei(Runner runner, RunNotifier notifier) {
-        this.runner = runner
-        this.notifier = notifier
+class ProgressIO {
+    private static final FILE_NAME = '.progress'
+
+    def readProgress() {
+        def f = new File(FILE_NAME)
+        f.exists() ? f.text as Integer : 0
     }
 
-    def initialize() {
-        readProgress()
-    }
-
-    private readProgress() {
-        def f = new File('.progress')
-        progress = f.exists() ? f.text.toInteger() : 0
-    }
-
-    private writeProgress() {
-        def f = new File('.progress')
+    def writeProgress(progress) {
+        def f = new File(FILE_NAME)
         if (!f.exists()) f.createNewFile()
-        f.text = passCount
+        f.text = progress
     }
+}
 
-    def printWelcomeMessage() {
-        println """Groovy MetaProgramming Koans
-${runner.testCount()} tough questions are waiting for you...
+class MessageRenderer {
+
+    def printWelcomeMessage(koanCount) {
+        println """
+Groovy MetaProgramming Koans
+${koanCount} tough questions are waiting for you...
 """
     }
 
@@ -55,31 +43,78 @@ You reached the enlightment
 """
     }
 
+    def printPassedMessage(Description description) {
+        println "${description.className} ${description.methodName} has expanded your awareness."
+    }
+
+    def printFailureMessage(Failure failure) {
+        println "${failure.description.className}.${failure.description.methodName} damaged your karma."
+        println failure.message
+        println failure.trace
+    }
+}
+
+class Sensei extends RunListener {
+    private RunNotifier notifier
+    private ProgressIO progressIO = new ProgressIO()
+    private MessageRenderer messageRenderer = new MessageRenderer()
+    private koanCount
+    private koansPassed = 0
+    private progress
+    private failed = false
+    private boolean isSuccess() { !failed }
+    private lastFailure
+
+    Sensei(koanCount, RunNotifier notifier) {
+        this.koanCount = koanCount
+        this.notifier = notifier
+    }
+
+    def initialize() {
+        progress = progressIO.readProgress()
+    }
+
+    def printWelcomeMessage() {
+        messageRenderer.printWelcomeMessage(koanCount)
+    }
+
+    def printFinalMessageIfCompleted() {
+        if (koanCount == koansPassed) {
+            messageRenderer.printFinalMessage()
+        }
+    }
+
     @Override
     void testFailure(Failure failure) {
-        failed = true
-        lastFailure = failure
+        markKoanAsFailed(failure)
     }
 
     @Override
     void testAssumptionFailure(Failure failure) {
+        markKoanAsFailed(failure)
+    }
+
+    private markKoanAsFailed(Failure failure) {
         failed = true
         lastFailure = failure
     }
 
     @Override
     void testFinished(Description description) {
-        if (success) {
-            passCount++
-            if (passCount > progress) {
-                println "${description.className} ${description.methodName} has expanded your awareness."
-            }
-            writeProgress()
-        } else {
-            println "${lastFailure.description.className} ${lastFailure.description.methodName} damaged your karma."
-            writeProgress()
-            notifier.pleaseStop()
+        success ? onKoanSuccess(description) : onKoanFailure()
+        progressIO.writeProgress(koansPassed)
+    }
+
+    private onKoanSuccess(Description description) {
+        koansPassed++
+        if (koansPassed > progress) {
+            messageRenderer.printPassedMessage(description)
         }
+    }
+
+    private onKoanFailure() {
+        messageRenderer.printFailureMessage(lastFailure)
+        notifier.pleaseStop()
     }
 }
 
@@ -107,13 +142,13 @@ class KoansSuite extends Suite {
 
     @Override
     void run(RunNotifier notifier) {
-        Sensei sensei = new Sensei(this, notifier)
+        Sensei sensei = new Sensei(testCount(), notifier)
         sensei.initialize()
         sensei.printWelcomeMessage()
 
         notifier.addListener(sensei)
         super.run(notifier)
 
-        sensei.printFinalMessage()
+        sensei.printFinalMessageIfCompleted()
     }
 }
