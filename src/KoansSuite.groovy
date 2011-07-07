@@ -8,9 +8,9 @@ import org.junit.runner.notification.Failure
 import static java.lang.String.format
 import org.junit.runner.notification.StoppedByUserException
 
-// TODO print zen encouragements
 // TODO move messages to external templates
 // TODO print stack traces on demand
+// TODO less messages from Gant?
 class ProgressIO {
     private static final FILE_NAME = '.progress'
 
@@ -37,18 +37,48 @@ ${koanCount} tough questions are waiting for you...
 
     def printFinalMessage() {
         println """
-You reached the enlightment
+Knowing others is wisdom;
+Knowing the self is enlightment.
+Mastering others requires force;
+Mastering the self needs strength.
+
+He who knows he has enough is rich.
+Perseverance is a sign of will power.
+He who stays where he is endures.
+To die but not to perish is to be eternally present.
+
+Tao Te Ching - Lao Tzu - chapter 33
 """
     }
 
     def printPassedMessage(Description description) {
-        println "${description.className} ${description.methodName} has expanded your awareness."
+        println "You have put another pebble on your way to enlightenment: ${description.className},${description.methodName}"
     }
 
     def printFailureMessage(Failure failure) {
-        println "${failure.description.className}.${failure.description.methodName} damaged your karma."
+        println "You have placed an obstacle into your awareness: ${failure.description.className},${failure.description.methodName}."
+        println "Please meditate on the following:"
         println failure.message
         println failure.trace
+    }
+
+    def printEncouragement() {
+        println """
+Remember:"""
+
+        def quotes = ['To a mind that is still, the whole universe surrenders.',
+            'The quieter you become, the more you are able to hear.',
+            'One who conquers himself is greater than another who conquers a thousand times a thousand on the battlefield.',
+            'When you seek it, you cannot find it.',
+            'From the withered tree, a flower blooms',
+            "Those who know don't tell and those who tell don't know.",
+            'Before enlightenment; chop wood, carry water. After enlightenment; chop wood, carry water.',
+            'The infinite is in the finite of every instant.',
+            'Sitting quietly, doing nothing, spring comes, and the grass grows by itself.',
+            'Anticipate the difficult by managing the easy.',
+            'If you do not change direction, you may end up where you are heading.'
+        ]
+        println quotes[new Random().nextInt(quotes.size())]
     }
 }
 
@@ -144,6 +174,10 @@ class Sensei extends RunListener {
         notifier.pleaseStop()
     }
 
+    def printEncouragement() {
+        messageRenderer.printEncouragement()
+    }
+
     def printProgressBar() {
         new ProgressBarRenderer().printProgressBar(koansPassed, totalKoans)
     }
@@ -182,6 +216,7 @@ class KoansSuite extends Suite {
             super.run(notifier)
         } catch (StoppedByUserException e) {
         } finally {
+            sensei.printEncouragement()
             sensei.printProgressBar()
             sensei.printFinalMessageIfCompleted()
         }
