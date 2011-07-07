@@ -58,8 +58,8 @@ class MessageRenderer {
         println passedMessageTmpl.make(binding)
     }
 
-    def printFailureMessage(Failure failure) {
-        def binding = [failure: failure]
+    def printFailureMessage(Failure failure, boolean trace) {
+        def binding = [failure: failure, trace: trace]
         println failureMessageTmpl.make(binding)
     }
 
@@ -72,7 +72,7 @@ class MessageRenderer {
 }
 
 class ProgressBarRenderer {
-    private static final CONSOLE_WIDTH = 80
+    private static final CONSOLE_WIDTH = 79
     private static final PROGRESS_LINE_START = '['
     private static final PROGRESS_LINE_END = ']'
     private static final COMPLETED_CHAR = '+'
@@ -160,7 +160,8 @@ class Sensei extends RunListener {
     }
 
     private onKoanFailure() {
-        messageRenderer.printFailureMessage(lastFailure)
+        def trace = System.getProperty('trace') != null
+        messageRenderer.printFailureMessage(lastFailure, trace)
         notifier.pleaseStop()
     }
 

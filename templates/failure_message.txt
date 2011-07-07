@@ -2,5 +2,4 @@ You have placed an obstacle into your awareness:
     ${failure.description.className} - ${failure.description.methodName}
 
 Please meditate on the following:
-${failure.message}
-${failure.trace}
+${failure.message}${trace ? '\n' + failure.trace : ''}
