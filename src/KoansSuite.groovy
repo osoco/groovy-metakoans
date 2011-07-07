@@ -7,8 +7,9 @@ import org.junit.runner.notification.RunListener
 import org.junit.runner.notification.Failure
 import static java.lang.String.format
 import org.junit.runner.notification.StoppedByUserException
+import groovy.text.SimpleTemplateEngine
+import groovy.text.Template
 
-// TODO move messages to external templates
 // TODO print stack traces on demand
 // TODO less messages from Gant?
 class ProgressIO {
@@ -27,58 +28,46 @@ class ProgressIO {
 }
 
 class MessageRenderer {
+    private static final TMPL_DIR = 'templates'
+    private SimpleTemplateEngine templateEngine = new SimpleTemplateEngine()
+    private Template welcomeMessageTmpl
+    private Template finalMessageTmpl
+    private Template passedMessageTmpl
+    private Template failureMessageTmpl
+    private Template encouragementTmpl
+
+    def initialize() {
+        welcomeMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/welcome_message.txt"))
+        finalMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/final_message.txt"))
+        passedMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/passed_message.txt"))
+        failureMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/failure_message.txt"))
+        encouragementTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/encouragement.txt"))
+    }
 
     def printWelcomeMessage(int koanCount) {
-        println """
-Groovy MetaProgramming Koans
-${koanCount} tough questions are waiting for you...
-"""
+        def binding = [koanCount: koanCount]
+        println welcomeMessageTmpl.make(binding)
     }
 
     def printFinalMessage() {
-        println """
-Knowing others is wisdom;
-Knowing the self is enlightment.
-Mastering others requires force;
-Mastering the self needs strength.
-
-He who knows he has enough is rich.
-Perseverance is a sign of will power.
-He who stays where he is endures.
-To die but not to perish is to be eternally present.
-
-Tao Te Ching - Lao Tzu - chapter 33
-"""
+        println finalMessageTmpl.make()
     }
 
     def printPassedMessage(Description description) {
-        println "You have put another pebble on your way to enlightenment: ${description.className},${description.methodName}"
+        def binding = [description: description]
+        println passedMessageTmpl.make(binding)
     }
 
     def printFailureMessage(Failure failure) {
-        println "You have placed an obstacle into your awareness: ${failure.description.className},${failure.description.methodName}."
-        println "Please meditate on the following:"
-        println failure.message
-        println failure.trace
+        def binding = [failure: failure]
+        println failureMessageTmpl.make(binding)
     }
 
     def printEncouragement() {
-        println """
-Remember:"""
-
-        def quotes = ['To a mind that is still, the whole universe surrenders.',
-            'The quieter you become, the more you are able to hear.',
-            'One who conquers himself is greater than another who conquers a thousand times a thousand on the battlefield.',
-            'When you seek it, you cannot find it.',
-            'From the withered tree, a flower blooms',
-            "Those who know don't tell and those who tell don't know.",
-            'Before enlightenment; chop wood, carry water. After enlightenment; chop wood, carry water.',
-            'The infinite is in the finite of every instant.',
-            'Sitting quietly, doing nothing, spring comes, and the grass grows by itself.',
-            'Anticipate the difficult by managing the easy.',
-            'If you do not change direction, you may end up where you are heading.'
-        ]
-        println quotes[new Random().nextInt(quotes.size())]
+        def quotes = new File("${TMPL_DIR}/quotes.txt").readLines()
+        def quote = quotes[new Random().nextInt(quotes.size())]
+        def binding = [quote: quote]
+        println encouragementTmpl.make(binding)
     }
 }
 
@@ -129,6 +118,7 @@ class Sensei extends RunListener {
 
     def initialize() {
         progress = progressIO.readProgress()
+        messageRenderer.initialize()
     }
 
     def printWelcomeMessage() {

@@ -1,0 +1,3 @@
+
+Groovy MetaProgramming Koans
+${koanCount} tough questions are waiting for you...
