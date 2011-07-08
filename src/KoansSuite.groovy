@@ -11,7 +11,6 @@ import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.runtime.StackTraceUtils
 
-// TODO less messages from Gant?
 class ProgressIO {
     private static final FILE_NAME = '.progress'
 
