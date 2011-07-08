@@ -11,7 +11,6 @@ import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import org.codehaus.groovy.runtime.StackTraceUtils
 
-// TODO limit the number of stack trace lines
 // TODO less messages from Gant?
 class ProgressIO {
     private static final FILE_NAME = '.progress'
@@ -59,10 +58,19 @@ class MessageRenderer {
         println passedMessageTmpl.make(binding)
     }
 
-    def printFailureMessage(Failure failure, boolean trace) {
+    def printFailureMessage(Failure failure, int traceLinesCount) {
         StackTraceUtils.sanitize(failure.exception)
-        def binding = [failure: failure, trace: trace]
+        def binding = [failure: failure, trace: extractTrace(failure, traceLinesCount)]
         println failureMessageTmpl.make(binding)
+    }
+
+    private extractTrace(failure, traceLinesCount) {
+        if (traceLinesCount) {
+            def traceLines = failure.trace.readLines()
+            traceLines[0..(Math.min(traceLinesCount, traceLines.size()) - 1)].join('\n').normalize()
+        } else {
+            ''
+        }
     }
 
     def printEncouragement() {
@@ -110,7 +118,9 @@ class Sensei extends RunListener {
     private int koansPassed = 0
     private int progress
     private boolean failed = false
+
     private boolean isSuccess() { !failed }
+
     private Failure lastFailure
 
     Sensei(int totalKoans, RunNotifier notifier) {
@@ -162,10 +172,20 @@ class Sensei extends RunListener {
     }
 
     private onKoanFailure() {
-        def trace = System.getProperty('trace') != null
-        messageRenderer.printFailureMessage(lastFailure, trace)
+        messageRenderer.printFailureMessage(lastFailure, getTraceLineFromSystemProperties())
         messageRenderer.printEncouragement()
         notifier.pleaseStop()
+    }
+
+    private getTraceLineFromSystemProperties() {
+        def trace = System.getProperty('trace')
+        if (trace == null) {
+            0
+        } else if (trace.empty) {
+            Integer.MAX_VALUE
+        } else {
+            trace as Integer
+        }
     }
 
     def printProgressBar() {
@@ -204,8 +224,10 @@ class KoansSuite extends Suite {
         notifier.addListener(sensei)
         try {
             super.run(notifier)
-        } catch (StoppedByUserException e) {
-        } finally {
+        }
+        catch (StoppedByUserException e) {
+        }
+        finally {
             sensei.printProgressBar()
             sensei.printFinalMessageIfCompleted()
         }
