@@ -1,9 +1,25 @@
+import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
 import org.junit.Test
-import org.junit.Assert
+import static org.junit.Assert.fail
 
 class POGOMethodDispatch {
 
     private shouldFail = new GroovyTestCase().&shouldFail
+
+    private shouldNeverFail(Class clazz, Closure code) {
+        Throwable th = null;
+        try {
+            code.call();
+        } catch (GroovyRuntimeException gre) {
+            th = ScriptBytecodeAdapter.unwrap(gre);
+        } catch (Throwable e) {
+            th = e;
+        }
+
+        if (clazz.isInstance(th)) {
+            fail("Closure " + code + " should have never failed with an exception of type " + clazz.getName());
+        }
+    }
 
     @Test
     void 'method declared directly in the class is executed (no surprise :))'() {
@@ -36,49 +52,49 @@ class POGOMethodDispatch {
 
     @Test
     void 'methodMissing is implemented and executed if the called method is not found'() {
-        def bike = new RingingBike()
+        def bike = new BikeWithMethodMissing()
 
         assert bike./*koanify*/ringLoudly()/**/ == 'ring loudly!'
     }
 
     @Test
     void 'methodMissing is implemented but it throws a MissingMethodException if it cannot handle the unknown method'() {
-        def bike = new RingingBike()
+        def bike = new BikeWithMethodMissing()
 
         shouldFail(/*koanify*/MissingMethodException/**/) { bike.bell() }
+        // Think: must methodMissing throw a MissingMethodException?
+        // What would be the result if the methodMissing implementation hadn't thrown MissingMethodException?
     }
 
     @Test
-    void 'invokeMethod is implemented and executed if the called method is not found'() {
-        def bike = new VersatileBike()
+    void 'invokeMethod is overridden and executed if the called method is not found'() {
+        def bike = new BikeWithInvokeMethod()
 
         assert bike./*koanify*/rideOnTheMoon()/**/ == 'riding onthemoon!'
     }
 
     @Test
-    void 'invokeMethod is implemented but it throws a MissingMethodException if it cannot handle the unknown method'() {
-        def bike = new VersatileBike()
+    void 'invokeMethod is overridden but it throws a MissingMethodException if it cannot handle the unknown method'() {
+        def bike = new BikeWithInvokeMethod()
 
         shouldFail(/*koanify*/MissingMethodException/**/) { bike.beRover() }
     }
 
     @Test
     void 'invokeMethod is never called if the method is implemented directly or in the metaclass'() {
-        def bike = new BrittleBike()
+        def bike = new BikeWithMethodMissingThrowingEx()
         bike.metaClass.win = { 'won!' }
 
         shouldFail(/*koanify*/BikeBrokenException/**/) { bike.beRover() }
-        try {
+        shouldNeverFail(/*koanify*/BikeBrokenException/**/) {
             bike.ring()
             bike.win()
-        } catch (/*koanify*/BikeBrokenException/**/ e) {
-            Assert.fail('Bike broken...')
         }
     }
 
     @Test
-    void 'methodMissing takes precedence if both methodMissing and invokeMethod are implemented'() {
-        def bike = new HybridBike()
+    void 'only methodMissing is executed if both methodMissing and invokeMethod are implemented'() {
+        def bike = new BikeWithMethodMissingAndInvokeMethod()
 
         assert bike./*koanify*/ringLoud()/**/ == 'ring loud!'
         shouldFail(/*koanify*/MissingMethodException/**/) {

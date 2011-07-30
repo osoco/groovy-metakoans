@@ -8,7 +8,7 @@ class GroovyInterceptableMethodDispatch {
 
     @Test
     void 'Groovy interceptor always delegates all method calls to invokeMethod'() {
-        def bike = new StubbornBike()
+        def bike = new InterceptableBike()
         bike.metaClass.win = { 'won!' }
 
         assert bike.ring() == /*koanify*/"won't do anything"/**/
