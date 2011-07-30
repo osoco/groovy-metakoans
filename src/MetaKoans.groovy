@@ -2,9 +2,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(KoansSuite)
-@SuiteClasses([POGOIntro, POGOMethodDispatch, POJOMethodDispatch, ToBeClassified])
+@SuiteClasses([POGOIntro, POGOMethodDispatch, GroovyInterceptableMethodDispatch, POJOMethodDispatch, ToBeClassified])
 class MetaKoans {
-    // TODO method calls with GroovyInterceptable
     // TODO Koan - querying methods and properties
     // TODO Koan with propertyMissing
 

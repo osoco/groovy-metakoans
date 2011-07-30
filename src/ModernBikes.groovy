@@ -55,4 +55,11 @@ class HybridBike extends Bike {
 
         throw new MissingMethodException(name, this.class, args)
     }
+
+}
+
+class StubbornBike extends Bike implements GroovyInterceptable {
+    def invokeMethod(String name, args) {
+        "won't do anything"
+    }
 }
