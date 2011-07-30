@@ -13,7 +13,7 @@ class POGOMethodDispatch {
     }
 
     @Test
-    void 'method can be added to the POGOs metaclass and executed as if were defined in the POGO'() {
+    void 'method can be added to the POGOs metaclass and executed as if it was defined in the POGO'() {
         def bike = new Bike()
         bike.metaClass.win = { 'won!' }
 
