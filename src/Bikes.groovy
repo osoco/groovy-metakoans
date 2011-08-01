@@ -2,6 +2,10 @@ class BikeBrokenException extends RuntimeException {
 }
 
 class Bike {
+    static hasHandleBar() {
+        true
+    }
+
     def gears = 24
 
     def ring(times = 1) {
