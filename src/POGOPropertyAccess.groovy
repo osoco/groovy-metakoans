@@ -23,7 +23,7 @@ class POGOPropertyAccess {
     void 'MissingPropertyException is raised if a property is not found neither in the class nor in the metaclass'() {
         def bike = new Bike()
 
-        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.wheels }
+        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.frameSize }
     }
 
     @Test

@@ -6,7 +6,11 @@ class Bike {
         true
     }
 
+    def raeder = 2
+
     def gears = 24
+
+    String getWheels() { raeder }
 
     def ring(times = 1) {
         'ring!' * times
