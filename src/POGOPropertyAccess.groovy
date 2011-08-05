@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class POGOPropertyAccess {
+class POGOPropertyAccess extends MetaKoan {
 
     private shouldFail = new GroovyTestCase().&shouldFail
 
@@ -12,11 +12,23 @@ class POGOPropertyAccess {
     }
 
     @Test
-    void 'property can be added to the POGOs metaclass and accessed as if it was defined in the POGO'() {
+    void 'property can be added to the POGOs instance metaclass and accessed as if it was defined in the POGO'() {
         def bike = new Bike()
         bike.metaClass.vendor = 'Orbea'
 
         assert bike./*koanify*/vendor/**/ == 'Orbea'
+    }
+
+    @Test
+    void 'if a property is added to the global metaclass, all instances share this property (as if it was static)'() {
+        registerMetaClass(Bike)
+
+        Bike.metaClass.vendor = 'Orbea'
+        def bike = new Bike()
+        def anotherBike = new Bike()
+
+        assert bike.vendor == /*koanify*/'Orbea'/**/
+        assert anotherBike.vendor == /*koanify*/'Orbea'/**/
     }
 
     @Test
