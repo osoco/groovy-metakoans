@@ -59,13 +59,13 @@ class GroovyAOP extends MetaKoan
     {
         registerMetaClass(Controller)
 
-        Controller.metaClass.invokeMethod = {
+        Controller.metaClass.invokeMethod = { String name, args ->
             logger << "method ${name} started"
             def result
             MetaMethod mm = LoggingController.metaClass.getMetaMethod(name, args)
             if (mm) {
                 logger << 'defined'
-                result = mm.invoke(this, args)
+                result = mm.invoke(delegate, args)
             } else {
                 logger << 'missing'
                 // Call invokeMissingMethod to give the chance to methodMissing to handle the call (if implemented, of course)
@@ -95,6 +95,20 @@ class GroovyAOP extends MetaKoan
     @Test
     void 'adding advices to the metaclass works for POJOs too'()
     {
-        // TODO
+        registerMetaClass(Velocipede)
+
+        Velocipede.metaClass.invokeMethod = { String name, args ->
+            MetaMethod mm = Velocipede.metaClass.getMetaMethod(name, args)
+            if (mm) {
+                return /*koanify*/"invoked: ${mm.invoke(delegate, args)}"/**/
+            }
+
+            return 'not implemented'
+        }
+
+        def velocipede = new Velocipede()
+
+        assert velocipede.ring() == 'invoked: ring!'
+        assert velocipede.win() == 'not implemented'
     }
 }
