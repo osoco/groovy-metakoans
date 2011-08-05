@@ -34,7 +34,7 @@ class POGOPropertyAccess {
     }
 
     @Test
-    void 'propertyMissing is implemented but it throws a MissingPropertyException if it cannot generate the property'() {
+    void 'propertyMissing is implemented but it should throw a MissingPropertyException if it cannot generate the property'() {
         def bike = new BikeWithPropertyMissing()
 
         shouldFail(/*koanify*/MissingPropertyException/**/) { bike.i }

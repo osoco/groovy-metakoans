@@ -74,7 +74,7 @@ class POGOMethodDispatch {
     }
 
     @Test
-    void 'invokeMethod is overridden but it throws a MissingMethodException if it cannot handle the unknown method'() {
+    void 'invokeMethod is overridden but it should throw a MissingMethodException if it cannot handle the unknown method'() {
         def bike = new BikeWithInvokeMethod()
 
         shouldFail(/*koanify*/MissingMethodException/**/) { bike.beRover() }
@@ -101,4 +101,7 @@ class POGOMethodDispatch {
             bike.rideOnTheMoon()
         }
     }
+
+    // TODO Koan - method overriden in the metaclass is called first - or implement it in the MethonSynthesis koan?
+    // TODO Koan - vide, invokeMethod implemented on the metaClass is called first
 }
