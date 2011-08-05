@@ -39,6 +39,16 @@ class POGOMethodDispatch extends MetaKoan {
     }
 
     @Test
+    void 'method overridden in the metaclass takes precedence over the method defined in the class'() {
+        registerMetaClass(Bike)
+
+        Bike.metaClass.ring = {'ring! (but differently)'}
+        def bike = new Bike()
+
+        assert bike.ring() == /*koanify*/'ring! (but differently)'/**/
+    }
+
+    @Test
     void 'property that is a closure is executed like a normal method'() {
         def bike = new Bike()
 
@@ -104,6 +114,16 @@ class POGOMethodDispatch extends MetaKoan {
         }
     }
 
-    // TODO Koan - method overriden in the metaclass is called first - or implement it in the MethonSynthesis koan?
-    // TODO Koan - vide, invokeMethod implemented on the metaClass is called first
+    @Test
+    void 'invokeMethod overridden in the metaclass takes precedence over invokeMethod defined in the class'() {
+        registerMetaClass(BikeWithInvokeMethod)
+
+        BikeWithInvokeMethod.metaClass.invokeMethod = { String name, args ->
+            'dynamic behaviour canceled'
+        }
+        def bike = new BikeWithInvokeMethod()
+
+        assert bike./*koanify*/rideOnTheMoon()/**/ == 'dynamic behaviour canceled'
+        // Think: what is the behaviour for other non-special methods defined both in the class and in the metaclass?
+    }
 }
