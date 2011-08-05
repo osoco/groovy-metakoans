@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class GroovyInterceptableMethodDispatch {
+class GroovyInterceptableMethodDispatch extends MetaKoan {
     @Test
     void 'GroovyInterceptable is a special case of GroovyObject'() {
         assert GroovyObject.isAssignableFrom(/*koanify*/GroovyInterceptable/**/)
@@ -8,8 +8,10 @@ class GroovyInterceptableMethodDispatch {
 
     @Test
     void 'Groovy interceptor always delegates all method calls to invokeMethod'() {
+        registerMetaClass(InterceptableBike)
+
+        InterceptableBike.metaClass.win = { 'won!' }
         def bike = new InterceptableBike()
-        bike.metaClass.win = { 'won!' }
 
         assert bike.ring() == /*koanify*/"won't do anything"/**/
         assert bike.ride() == /*koanify*/"won't do anything"/**/

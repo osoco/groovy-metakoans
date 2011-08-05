@@ -1,7 +1,7 @@
 import org.codehaus.groovy.runtime.HandleMetaClass
 import org.junit.Test
 
-class POJOMethodDispatch {
+class POJOMethodDispatch extends MetaKoan {
     @Test
     void 'every POJO has a metaclass too'() {
         def velocipede = new Velocipede()
@@ -19,8 +19,10 @@ class POJOMethodDispatch {
 
     @Test
     void 'method can be added to the POJOs metaclass and executed as if it was defined in the POJO'() {
+        registerMetaClass(Velocipede)
+
+        Velocipede.metaClass.win = { 'won!' }
         def velocipede = new Velocipede()
-        velocipede.metaClass.win = { 'won!' }
 
         assert velocipede./*koanify*/win()/**/ == 'won!'
     }

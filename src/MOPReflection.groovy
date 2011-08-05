@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class MOPReflection {
+class MOPReflection extends MetaKoan {
     @Test
     void 'every metaclass implements MetaObjectProtocol (MOP)'()  {
         assert MetaObjectProtocol.isAssignableFrom(/*koanify*/MetaClass/**/)
@@ -37,8 +37,10 @@ class MOPReflection {
 
     @Test
     void 'method added to metaclass is a MOP meta method (although it is closure)'() {
+        registerMetaClass(Bike)
+
+        Bike.metaClass.win = {'won!'}
         def bike = new Bike()
-        bike.metaClass.win = {'won!'}
 
         MetaMethod mm = bike.metaClass.getMetaMethod('win')
         mm.declaringClass.theClass == /*koanify*/Bike/**/
@@ -58,8 +60,10 @@ class MOPReflection {
 
     @Test
     void 'respondsTo finds out if an object would respond to a method call'() {
+        registerMetaClass(Bike)
+
+        Bike.metaClass.win = {'won!'}
         def bike = new Bike()
-        bike.metaClass.win = {'won!'}
 
         assert Bike.metaClass.respondsTo(bike, 'ring').size() == /*koanify*/2/**/
         assert Bike.metaClass.respondsTo(/*koanify*/bike/**/, /*koanify*/'ring'/**/, [] as Object[]).size() == /*koanify*/1/**/

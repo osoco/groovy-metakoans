@@ -2,7 +2,7 @@ import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
 import org.junit.Test
 import static org.junit.Assert.fail
 
-class POGOMethodDispatch {
+class POGOMethodDispatch extends MetaKoan {
 
     private shouldFail = new GroovyTestCase().&shouldFail
 
@@ -30,8 +30,10 @@ class POGOMethodDispatch {
 
     @Test
     void 'method can be added to the POGOs metaclass and executed as if it was defined in the POGO'() {
+        registerMetaClass(Bike)
+
+        Bike.metaClass.win = {'won!'}
         def bike = new Bike()
-        bike.metaClass.win = { 'won!' }
 
         assert bike./*koanify*/win()/**/ == 'won!'
     }
