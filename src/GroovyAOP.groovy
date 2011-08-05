@@ -1,3 +1,4 @@
+import org.junit.Before
 import org.junit.Test
 
 class Controller {
@@ -31,13 +32,15 @@ class LoggingController extends Controller implements GroovyInterceptable {
     }
 }
 
-class GroovyAOP extends MetaKoan
-{
-    @Test
-    void 'use GroovyInterceptable to implement an around advice for a POGO'()
-    {
-        registerMetaClass(Controller)
+class GroovyAOP extends MetaKoan {
+    @Before
+    void registerModifiedMetaClasses() {
+        storeOriginalMetaClass(Controller)
+        storeOriginalMetaClass(Velocipede)
+    }
 
+    @Test
+    void 'use GroovyInterceptable to implement an around advice for a POGO'() {
         def controller = new LoggingController()
         assert controller.list() == 'article list'
         assert controller.logger == [ /*koanify*/'method list started'/**/, /*koanify*/'defined'/**/, /*koanify*/'method list finished'/**/, /*koanify*/'result: article list'/**/]
@@ -55,10 +58,7 @@ class GroovyAOP extends MetaKoan
     }
 
     @Test
-    void 'you can add an around advice to POGOs metaclass'()
-    {
-        registerMetaClass(Controller)
-
+    void 'you can add an around advice to POGOs metaclass'() {
         Controller.metaClass.invokeMethod = { String name, args ->
             logger << "method ${name} started"
             def result
@@ -93,10 +93,7 @@ class GroovyAOP extends MetaKoan
     }
 
     @Test
-    void 'adding advices to the metaclass works for POJOs too'()
-    {
-        registerMetaClass(Velocipede)
-
+    void 'adding advices to the metaclass works for POJOs too'() {
         Velocipede.metaClass.invokeMethod = { String name, args ->
             MetaMethod mm = Velocipede.metaClass.getMetaMethod(name, args)
             if (mm) {

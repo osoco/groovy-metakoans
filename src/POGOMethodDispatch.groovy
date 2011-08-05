@@ -1,24 +1,11 @@
-import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
+import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.fail
 
 class POGOMethodDispatch extends MetaKoan {
-
-    private shouldFail = new GroovyTestCase().&shouldFail
-
-    private shouldNeverFail(Class clazz, Closure code) {
-        Throwable th = null;
-        try {
-            code.call();
-        } catch (GroovyRuntimeException gre) {
-            th = ScriptBytecodeAdapter.unwrap(gre);
-        } catch (Throwable e) {
-            th = e;
-        }
-
-        if (clazz.isInstance(th)) {
-            fail("Closure " + code + " should have never failed with an exception of type " + clazz.getName());
-        }
+    @Before
+    void registerModifiedMetaClasses() {
+        storeOriginalMetaClass(Bike)
+        storeOriginalMetaClass(BikeWithInvokeMethod)
     }
 
     @Test
@@ -30,8 +17,6 @@ class POGOMethodDispatch extends MetaKoan {
 
     @Test
     void 'method can be added to the POGOs metaclass and executed as if it was defined in the POGO'() {
-        registerMetaClass(Bike)
-
         Bike.metaClass.win = {'won!'}
         def bike = new Bike()
 
@@ -40,8 +25,6 @@ class POGOMethodDispatch extends MetaKoan {
 
     @Test
     void 'method overridden in the metaclass takes precedence over the method defined in the class'() {
-        registerMetaClass(Bike)
-
         Bike.metaClass.ring = {'ring! (but differently)'}
         def bike = new Bike()
 
@@ -116,8 +99,6 @@ class POGOMethodDispatch extends MetaKoan {
 
     @Test
     void 'invokeMethod overridden in the metaclass takes precedence over invokeMethod defined in the class'() {
-        registerMetaClass(BikeWithInvokeMethod)
-
         BikeWithInvokeMethod.metaClass.invokeMethod = { String name, args ->
             'dynamic behaviour canceled'
         }

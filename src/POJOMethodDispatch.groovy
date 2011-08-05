@@ -1,7 +1,13 @@
 import org.codehaus.groovy.runtime.HandleMetaClass
+import org.junit.Before
 import org.junit.Test
 
 class POJOMethodDispatch extends MetaKoan {
+   @Before
+    void registerModifiedMetaClasses() {
+       storeOriginalMetaClass(Velocipede)
+    }
+
     @Test
     void 'every POJO has a metaclass too'() {
         def velocipede = new Velocipede()
@@ -19,8 +25,6 @@ class POJOMethodDispatch extends MetaKoan {
 
     @Test
     void 'method can be added to the POJOs metaclass and executed as if it was defined in the POJO'() {
-        registerMetaClass(Velocipede)
-
         Velocipede.metaClass.win = { 'won!' }
         def velocipede = new Velocipede()
 

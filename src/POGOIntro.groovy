@@ -1,7 +1,7 @@
 import org.codehaus.groovy.runtime.HandleMetaClass
 import org.junit.Test
 
-class POGOIntro {
+class POGOIntro extends MetaKoan {
     @Test
     void 'any object defined in Groovy (POGO) implements implicitly GroovyObject interface'() {
         setup:

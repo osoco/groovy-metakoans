@@ -1,6 +1,12 @@
+import org.junit.Before
 import org.junit.Test
 
 class MOPReflection extends MetaKoan {
+    @Before
+    void registerModifiedMetaClasses() {
+        storeOriginalMetaClass(Bike)
+    }
+
     @Test
     void 'every metaclass implements MetaObjectProtocol (MOP)'()  {
         assert MetaObjectProtocol.isAssignableFrom(/*koanify*/MetaClass/**/)
@@ -37,8 +43,6 @@ class MOPReflection extends MetaKoan {
 
     @Test
     void 'method added to metaclass is a MOP meta method (although it is closure)'() {
-        registerMetaClass(Bike)
-
         Bike.metaClass.win = {'won!'}
         def bike = new Bike()
 
@@ -60,8 +64,6 @@ class MOPReflection extends MetaKoan {
 
     @Test
     void 'respondsTo finds out if an object would respond to a method call'() {
-        registerMetaClass(Bike)
-
         Bike.metaClass.win = {'won!'}
         def bike = new Bike()
 

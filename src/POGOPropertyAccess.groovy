@@ -1,8 +1,12 @@
+import org.junit.Before
 import org.junit.Test
 
 class POGOPropertyAccess extends MetaKoan {
 
-    private shouldFail = new GroovyTestCase().&shouldFail
+    @Before
+    void registerModifiedMetaClasses() {
+        storeOriginalMetaClass(Bike)
+    }
 
     @Test
     void 'property declared directly in the class is accessed (no surprise :))'() {
@@ -21,7 +25,7 @@ class POGOPropertyAccess extends MetaKoan {
 
     @Test
     void 'if a property is added to the global metaclass, all instances share this property (as if it was static)'() {
-        registerMetaClass(Bike)
+        storeOriginalMetaClass(Bike)
 
         Bike.metaClass.vendor = 'Orbea'
         def bike = new Bike()
