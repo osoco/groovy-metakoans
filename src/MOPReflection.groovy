@@ -132,5 +132,18 @@ class MOPReflection {
         assert Bike.metaClass.getAttribute(bike, 'raeder') == /*koanify*/4/**/
     }
 
-    // TODO MOP reflection for POJOs
+    @Test
+    void 'since POJOs have a metaclass, MOP reflection works for POJOs too'() {
+        def velocipede = new Velocipede()
+
+        MetaMethod mm = velocipede.metaClass.getMetaMethod('ring')
+        assert mm.declaringClass.theClass == /*koanify*/Velocipede/**/
+        assert mm.returnType == /*koanify*/String/**/
+        assert mm.parameterTypes*.theClass == /*koanify*/[]/**/
+        assert mm.invoke(velocipede) == /*koanify*/'ring!'/**/
+
+        assert Velocipede.metaClass.methods.findAll({ it.name == 'ring' }).size() == /*koanify*/1/**/
+
+        assert Velocipede.metaClass.respondsTo(velocipede, 'ring').size() == /*koanify*/1/**/
+    }
 }
