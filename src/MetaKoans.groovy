@@ -5,9 +5,11 @@ import org.junit.runners.Suite.SuiteClasses
 @SuiteClasses([POGOIntro, POGOMethodDispatch, GroovyInterceptableMethodDispatch, POJOMethodDispatch, POGOPropertyAccess,
     MOPReflection, GroovyAOP, Categories, CompileTimeMixins, RuntimeMixins])
 class MetaKoans {
+    // In progress
+    // TODO Koans - 14.2, method injection with EMC
+
     // Backlog:
     // TODO Koans - 12.3 Dynamically Accessing Objects
-    // TODO Koans - 14.2, method injection with EMC
     // TODO Koans - 14.3, method injection into specific instances
     // TODO Koans - 14.4, method synthesis using methodMissing
     // TODO Koans - 14.5, method synthesis using EMC
