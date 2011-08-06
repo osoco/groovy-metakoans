@@ -2,7 +2,6 @@ import org.junit.Before
 import org.junit.Test
 
 class POGOPropertyAccess extends MetaKoan {
-
     @Before
     void registerModifiedMetaClasses() {
         storeOriginalMetaClass(Bike)
@@ -16,23 +15,11 @@ class POGOPropertyAccess extends MetaKoan {
     }
 
     @Test
-    void 'property can be added to the POGOs instance metaclass and accessed as if it was defined in the POGO'() {
+    void 'property added to the POGOs instance metaclass is accessed as if it was defined in the POGO'() {
         def bike = new Bike()
         bike.metaClass.vendor = 'Orbea'
 
         assert bike./*koanify*/vendor/**/ == 'Orbea'
-    }
-
-    @Test
-    void 'if a property is added to the global metaclass, all instances share this property (as if it was static)'() {
-        storeOriginalMetaClass(Bike)
-
-        Bike.metaClass.vendor = 'Orbea'
-        def bike = new Bike()
-        def anotherBike = new Bike()
-
-        assert bike.vendor == /*koanify*/'Orbea'/**/
-        assert anotherBike.vendor == /*koanify*/'Orbea'/**/
     }
 
     @Test

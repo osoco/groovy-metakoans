@@ -16,7 +16,7 @@ class POGOMethodDispatch extends MetaKoan {
     }
 
     @Test
-    void 'method can be added to the POGOs metaclass and executed as if it was defined in the POGO'() {
+    void 'method added to the POGOs metaclass can be executed as if it was defined in the POGO'() {
         Bike.metaClass.win = {'won!'}
         def bike = new Bike()
 
@@ -80,8 +80,8 @@ class POGOMethodDispatch extends MetaKoan {
         def bike = new BikeWithMethodMissingThrowingEx()
         bike.metaClass.win = { 'won!' }
 
-        shouldFail(/*koanify*/BikeBrokenException/**/) { bike.beRover() }
-        shouldNeverFail(/*koanify*/BikeBrokenException/**/) {
+        /*koanify*/shouldFail/**/(BikeBrokenException) { bike.beRover() }
+        /*koanify*/shouldNeverFail/**/(BikeBrokenException) {
             bike.ring()
             bike.win()
         }
