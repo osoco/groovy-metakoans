@@ -6,12 +6,12 @@ class MetaKoan {
     protected Map originalMetaClasses
 
     @Before
-    public void clearOriginalMetaClasses() {
+    void clearOriginalMetaClasses() {
         originalMetaClasses = [:]
     }
 
     @After
-    public void restoreOriginalMetaClasses() {
+    void restoreOriginalMetaClasses() {
         originalMetaClasses.each { clazz, metaClass ->
             GroovySystem.metaClassRegistry.removeMetaClass(clazz)
             GroovySystem.metaClassRegistry.setMetaClass(clazz, metaClass)
