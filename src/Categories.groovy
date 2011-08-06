@@ -1,6 +1,6 @@
 import org.junit.Test
 
-class StringUtils {
+class ClassicCategoryStringUtils {
     static underscorize(String self)  {
         self.replaceAll(/(.)([A-Z])/) {
             "${it[1]}_${it[2]}"
@@ -15,11 +15,20 @@ class AutoCloseableReader {
     }
 }
 
-class CategoriesAndMixins extends MetaKoan {
+@Category(String)
+class ASTTransformationStringUtils {
+    def underscorize()  {
+        this.replaceAll(/(.)([A-Z])/) {
+            "${it[1]}_${it[2]}"
+        }.toLowerCase()
+    }
+}
+
+class Categories extends MetaKoan {
 
     @Test
-    void 'you add new behaviour with categories'() {
-        use(/*koanify*/StringUtils/**/) {
+    void 'you add new behaviour with classic categories'() {
+        use(/*koanify*/ClassicCategoryStringUtils/**/) {
             assert 'CamelCaseString'./*koanify*/underscorize()/**/ == 'camel_case_string'
         }
         // Note: use adds category methods to the metaclass of the class given as use parameter.
@@ -44,5 +53,10 @@ class CategoriesAndMixins extends MetaKoan {
         }
     }
 
-    // TODO AST categories;compile time and runtime mixing
+    @Test
+    void 'you can use _use_ method to add new behaviour with AST transformation categories like with classic categories'() {
+        use(/*koanify*/ASTTransformationStringUtils/**/) {
+            assert 'CamelCaseString'./*koanify*/underscorize()/**/ == 'camel_case_string'
+        }
+    }
 }

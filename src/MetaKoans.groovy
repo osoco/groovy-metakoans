@@ -3,10 +3,10 @@ import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(KoansSuite)
 @SuiteClasses([POGOIntro, POGOMethodDispatch, GroovyInterceptableMethodDispatch, POJOMethodDispatch, POGOPropertyAccess,
-    MOPReflection, GroovyAOP, CategoriesAndMixins])
+    MOPReflection, GroovyAOP, Categories, CompileTimeMixins, RuntimeMixins])
 class MetaKoans {
     // TODO Koans - 12.3 Dynamically Accessing Objects
-    // TODO Koans - 14., complete chapter
+    // TODO Koans - 14., starting from groovy.lang.ExpandoMetaClass
     // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
 
     // TODO how HandleMetaClass and DelegatingMetaClass work? Why are they used instead of ExpandoMetaClass?
