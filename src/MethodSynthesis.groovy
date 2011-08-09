@@ -81,7 +81,7 @@ class MethodSynthesis extends MetaKoan {
 
         // Did the metaclass of BikeWithCountingMethodMissing change?
         assert BikeWithCountingMethodMissing.metaClass instanceof ExpandoMetaClass == /*koanify*/true/**/
-        assert bike.numberOfCreatedMethods == /*koanify*/3/**/
+        assert bike.numberOfCreatedMethods == /*koanify*/2/**/
 
         def anotherBike = new BikeWithCountingMethodMissing()
         anotherBike.goToMadrid()
