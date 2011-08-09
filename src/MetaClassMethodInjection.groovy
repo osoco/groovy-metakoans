@@ -126,12 +126,22 @@ class MetaClassMethodInjection extends MetaKoan {
 
     @Test
     void 'a new constructor can be added through the metaclass' () {
-        // TODO TBD
+        String.metaClass.constructor << { int n ->
+            /*koanify*/new String(n.toString());/**/
+        }
+
+        assert new String(1) == '1'
     }
 
     @Test
     void 'an existing construct can be replaced by overriding it in the metaclass (yes it is possible in Groovy)' () {
-        // TODO TBD
+        String.metaClass.constructor = { String s ->
+            // You can still get a reference to the original constructor
+            def originalConstructor = String.class.getConstructor(String)
+            /*koanify*/originalConstructor.newInstance(s) * 2/**/
+        }
+
+        assert new String('source') == 'sourcesource'
     }
 
     @Test
