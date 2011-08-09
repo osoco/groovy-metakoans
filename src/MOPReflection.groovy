@@ -13,7 +13,7 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'object Class is not MetaClass but it can be obtained from'() {
+    void 'object Class is not MetaClass but it can be obtained from it'() {
         assert (Bike.class == Bike.metaClass) == /*koanify*/false/**/
         assert (Bike.class == Bike.metaClass.theClass) == /*koanify*/true/**/
     }
@@ -34,6 +34,13 @@ class MOPReflection extends MetaKoan {
         assert Bike.metaClass.methods.findAll({ it.name == 'ring' }).size() == /*koanify*/2/**/
         // Notice that you get a declared method using getMetaMethod
         // However, you use getMethods to get the list of declared methods
+    }
+
+    @Test
+    void 'you cannot get constructor as MetaMethod via MOP'() {
+        MetaMethod mm = Bike.metaClass.getMetaMethod(Bike.class.simpleName)
+
+        assert mm == /*koanify*/null/**/
     }
 
     @Test
