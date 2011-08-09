@@ -81,6 +81,15 @@ class MetaClassMethodInjection extends MetaKoan {
     }
 
     @Test
+    void 'if a property is added to the default metaclass it is automatically replaced by ExpandoMetaClass' () {
+        assert Date.metaClass instanceof ExpandoMetaClass == /*koanify*/false/**/
+
+        Date.metaClass.daysInYear = 365
+
+        assert Date.metaClass instanceof ExpandoMetaClass == /*koanify*/true/**/
+    }
+
+    @Test
     void 'a class (static) attribute must be added as a property through the metaclass' () {
         String.metaClass.static.zero = '0'
         /*koanify*/shouldFail/**/(MissingPropertyException) {
@@ -177,6 +186,6 @@ class MetaClassMethodInjection extends MetaKoan {
 
     @Test
     void 'you can substitute metaclass and pass a prepared ExpandoMetaClass'() {
-        // TODO should it be covered in the method synthesis koan?
+        // TODO implement it
     }
 }
