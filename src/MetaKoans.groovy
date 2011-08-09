@@ -10,10 +10,9 @@ class MetaKoans {
     // Backlog:
     // TODO Run koans with Groovy 1.8
     // TODO Koans - 12.3 Dynamically Accessing Objects
-    // TODO Koans - 14.4, method synthesis using methodMissing
     // TODO Koans - 14.5, method synthesis using EMC
     // TODO Koans - 14.6, method synthesis for specific instances
-    // TODO Koans - 15, complete chapter
+    // TODO Koans - 15, complete chapter (if applies)
     // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
     // TODO Koans - AST transformations
 
