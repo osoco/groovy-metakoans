@@ -24,15 +24,17 @@ class MethodSynthesis extends MetaKoan {
         storeOriginalMetaClass(Bike)
     }
 
+    def bikeMethodMissing = { String name, args ->
+        if (name.startsWith('goTo')) {
+            return "going to ${name.substring('goTo'.length())}"
+        }
+
+        throw new MissingMethodException(name, Bike, args);
+    }
+
     @Test
     void 'you can create methods on the fly using methodMissing'() {
-        Bike.metaClass.methodMissing = { String name, args ->
-            if (name.startsWith('goTo')) {
-                return "going to ${name.substring('goTo'.length())}"
-            }
-
-            throw new MissingMethodException(name, Bike, args);
-        }
+        Bike.metaClass.methodMissing = bikeMethodMissing
 
         def bike = new Bike()
         /*koanify*/shouldFail/**/(MissingMethodException) {
@@ -40,7 +42,26 @@ class MethodSynthesis extends MetaKoan {
         }
 
         /*koanify*/shouldNeverFail/**/(MissingMethodException) {
-            assert bike.goToMadrid() == 'a'
+            bike.goToMadrid()
+        }
+    }
+
+    @Test
+    void 'you can create methods on the fly by substituting the metaclass and passing a prepared ExpandoMetaClass'() {
+        def emc = new ExpandoMetaClass(Bike)
+        emc.methodMissing = bikeMethodMissing
+        // Don't forget to initialize ExpandoMetaClass after adding methods!
+        emc.initialize()
+
+        def bike = new Bike()
+        def bike2 = new Bike()
+        bike.metaClass = emc
+
+        /*koanify*/shouldNeverFail/**/(MissingMethodException) {
+            bike.goToMadrid()
+        }
+        /*koanify*/shouldFail/**/(MissingMethodException) {
+            bike2.goToMadrid()
         }
     }
 

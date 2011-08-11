@@ -183,9 +183,4 @@ class MetaClassMethodInjection extends MetaKoan {
             new LinkedList([0, 1]).swap(0, 1)
         }
     }
-
-    @Test
-    void 'you can substitute metaclass and pass a prepared ExpandoMetaClass'() {
-        // TODO implement it
-    }
 }
