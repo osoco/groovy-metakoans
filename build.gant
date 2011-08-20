@@ -1,11 +1,31 @@
-includeTargets << gant.targets.Clean
+// TODO where to get gant.targets.Clean in Linux?
+//includeTargets << gant.targets.Clean
 taskdef(name: 'groovyc',  classname: 'org.codehaus.groovy.ant.Groovyc')
 
-target wayToEnlightment: 'Executes koans', {
+// TODO define target without the description
+target init: '', {
     mkdir dir: "${basedir}/target"
+}
+
+// TODO define target without the description
+target compileKoanEngine: '', {
+    depends init
+
+    groovyc srcdir: "${basedir}/koan_engine", destdir: "${basedir}/target"
+}
+
+// TODO define target without the description
+target compileKoans: '', {
+    depends init
+
     groovyc srcdir: "${basedir}/src", destdir: "${basedir}/target", {
         javac source: '1.6', target: '1.6'
     }
+}
+
+target wayToEnlightment: 'Executes koans', {
+    depends compileKoanEngine, compileKoans
+
     junit printsummary: true, haltonfailure: true, {
         classpath {
             pathelement location: "${basedir}/target"
