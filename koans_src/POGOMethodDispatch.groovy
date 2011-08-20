@@ -1,5 +1,11 @@
 import org.junit.Before
 import org.junit.Test
+import support.BikeWithInvokeMethod
+import support.BikeWithMethodMissing
+import support.Bike
+import support.BikeBrokenException
+import support.BikeWithMethodMissingAndInvokeMethod
+import support.BikeWithMethodMissingThrowingEx
 
 class POGOMethodDispatch extends MetaKoan {
     @Before

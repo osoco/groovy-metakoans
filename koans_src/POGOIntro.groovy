@@ -1,5 +1,6 @@
 import org.codehaus.groovy.runtime.HandleMetaClass
 import org.junit.Test
+import support.Bike
 
 class POGOIntro extends MetaKoan {
     @Test

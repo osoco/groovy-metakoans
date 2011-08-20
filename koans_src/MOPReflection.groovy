@@ -1,5 +1,7 @@
 import org.junit.Before
 import org.junit.Test
+import support.Bike
+import support.Velocipede
 
 class MOPReflection extends MetaKoan {
     @Before

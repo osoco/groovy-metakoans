@@ -1,5 +1,6 @@
 import org.junit.Before
 import org.junit.Test
+import support.InterceptableBike
 
 class GroovyInterceptableMethodDispatch extends MetaKoan {
     @Before

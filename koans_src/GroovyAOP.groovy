@@ -1,5 +1,6 @@
 import org.junit.Before
 import org.junit.Test
+import support.Velocipede
 
 class Controller {
     def list() {

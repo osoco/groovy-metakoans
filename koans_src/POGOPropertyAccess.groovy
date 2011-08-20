@@ -1,5 +1,9 @@
 import org.junit.Before
 import org.junit.Test
+import support.BikeWithPropertyMissingAndGetSetProperty
+import support.BikeWithGetSetProperty
+import support.BikeWithPropertyMissing
+import support.Bike
 
 class POGOPropertyAccess extends MetaKoan {
     @Before

@@ -1,5 +1,6 @@
 import org.junit.Before
 import org.junit.Test
+import support.Bike
 
 class BikeWithCountingMethodMissing {
     def numberOfCreatedMethods = 0

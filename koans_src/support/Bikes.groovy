@@ -1,3 +1,4 @@
+package support
 class BikeBrokenException extends RuntimeException {
 }
 

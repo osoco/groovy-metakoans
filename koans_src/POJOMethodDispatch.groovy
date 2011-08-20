@@ -1,6 +1,6 @@
-import org.codehaus.groovy.runtime.HandleMetaClass
 import org.junit.Before
 import org.junit.Test
+import support.Velocipede
 
 class POJOMethodDispatch extends MetaKoan {
     @Before
