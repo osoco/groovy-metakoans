@@ -3,17 +3,9 @@ import org.junit.Before
 import org.junit.Test
 
 class POJOMethodDispatch extends MetaKoan {
-   @Before
+    @Before
     void registerModifiedMetaClasses() {
        storeOriginalMetaClass(Velocipede)
-    }
-
-    @Test
-    void 'every POJO has a metaclass too'() {
-        def velocipede = new Velocipede()
-
-        assert velocipede.metaClass instanceof /*koanify*/MetaClass/**/
-        assert velocipede.metaClass.class == /*koanify*/HandleMetaClass/**/
     }
 
     @Test

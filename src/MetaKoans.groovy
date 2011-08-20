@@ -2,14 +2,24 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(KoansSuite)
-@SuiteClasses([POGOIntro, POGOMethodDispatch, GroovyInterceptableMethodDispatch, POJOMethodDispatch, POGOPropertyAccess,
-    MOPReflection, GroovyAOP, Categories, CompileTimeMixins, RuntimeMixins, MetaClassMethodInjection, MethodSynthesis])
+@SuiteClasses([POGOIntro,
+    POGOMethodDispatch,
+    GroovyInterceptableMethodDispatch,
+    POJOIntro,
+    POJOMethodDispatch,
+    POGOPropertyAccess,
+    MOPReflection,
+    GroovyAOP,
+    Categories,
+    CompileTimeMixins,
+    RuntimeMixins,
+    MetaClassMethodInjection,
+    MethodSynthesis])
 class MetaKoans {
     // In progress
 
     // Backlog:
     // TODO Run koans with Groovy 1.8
-    // TODO Koans - 12.3 Dynamically Accessing Objects
     // TODO Koans - 15, complete chapter (if applies)
     // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
     // TODO Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?

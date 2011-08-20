@@ -34,4 +34,25 @@ class POGOIntro extends MetaKoan {
         assert bike.metaClass instanceof /*koanify*/MetaClass/**/
         assert bike.metaClass.class == /*koanify*/HandleMetaClass/**/
     }
+
+    @Test
+    void 'POGO methods can be invoked dynamically'() {
+        setup:
+        def bike = new Bike()
+        def method = /*koanify*/"ring"/**/
+
+        expect:
+        bike."${method}"() == 'ring!'
+    }
+
+    @Test
+    void 'POGO properties can be accessed dynamically with dot or map notation'() {
+        setup:
+        def bike = new Bike()
+        def property = /*koanify*/"gears"/**/
+
+        expect:
+        bike."${property}" == 24
+        bike["${property}"] == 24
+    }
 }
