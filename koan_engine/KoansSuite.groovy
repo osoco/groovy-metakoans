@@ -27,7 +27,7 @@ class ProgressIO {
 }
 
 class MessageRenderer {
-    private static final TMPL_DIR = 'templates'
+    private static final TMPL_DIR = 'koan_engine/templates'
     private SimpleTemplateEngine templateEngine = new SimpleTemplateEngine()
     private Template welcomeMessageTmpl
     private Template finalMessageTmpl
