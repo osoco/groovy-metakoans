@@ -4,7 +4,6 @@ import org.junit.Test
 class POGOIntro extends MetaKoan {
     @Test
     void 'any object defined in Groovy (POGO) implements implicitly GroovyObject interface'() {
-        setup:
         def bike = new Bike()
 
         assert bike instanceof Object
@@ -37,7 +36,6 @@ class POGOIntro extends MetaKoan {
 
     @Test
     void 'POGO methods can be invoked dynamically'() {
-        setup:
         def bike = new Bike()
         def method = /*koanify*/"ring"/**/
 
@@ -47,7 +45,6 @@ class POGOIntro extends MetaKoan {
 
     @Test
     void 'POGO properties can be accessed dynamically with dot or map notation'() {
-        setup:
         def bike = new Bike()
         def property = /*koanify*/"gears"/**/
 

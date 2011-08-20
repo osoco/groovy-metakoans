@@ -64,7 +64,7 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'MOP provides information about declared class (static) methods'() {
+    void 'MOP provides information about declared static methods'() {
         MetaMethod mm = Bike.metaClass.getStaticMetaMethod('hasHandleBar', [] as Object[])
         assert mm.static == /*koanify*/true/**/
     }
@@ -99,7 +99,7 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'you can invoke a class (static) method through MOP without the reference to the meta method'() {
+    void 'you can invoke a static method through MOP without the reference to the meta method'() {
         assert Bike.metaClass.invokeStaticMethod(/*koanify*/Bike/**/, /*koanify*/'hasHandleBar'/**/) == true
     }
 

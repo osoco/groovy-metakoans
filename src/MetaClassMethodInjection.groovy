@@ -62,48 +62,10 @@ class MetaClassMethodInjection extends MetaKoan {
     }
 
     @Test
-    void 'a new class (static) method can be added through the metaclass' () {
+    void 'a new static method can be added through the metaclass' () {
         Double.metaClass.static.floor = { n -> /*koanify*/Math.floor(n)/**/ } // Hint: use java.lang.Math
 
         assert Double.floor(Math.PI) == 3
-    }
-
-    @Test
-    void 'a new property can be added through the metaclass' () {
-        String.metaClass.zero = '0'
-
-        assert 'a string'.zero == /*koanify*/'0'/**/
-        assert 'another string'.zero == /*koanify*/'0'/**/
-
-        'a string'.zero = '1'
-        assert 'a string'.zero == /*koanify*/'1'/**/
-        assert 'another string'.zero == /*koanify*/'0'/**/
-    }
-
-    @Test
-    void 'if a property is added to the default metaclass it is automatically replaced by ExpandoMetaClass' () {
-        assert Date.metaClass instanceof ExpandoMetaClass == /*koanify*/false/**/
-
-        Date.metaClass.daysInYear = 365
-
-        assert Date.metaClass instanceof ExpandoMetaClass == /*koanify*/true/**/
-    }
-
-    @Test
-    void 'a class (static) attribute must be added as a property through the metaclass' () {
-        String.metaClass.static.zero = '0'
-        /*koanify*/shouldFail/**/(MissingPropertyException) {
-            String.zero
-        }
-
-        String.metaClass.static./*koanify*/getZero/**/ = { '0' }
-        /*koanify*/shouldNeverFail/**/(MissingPropertyException) {
-            String.zero
-        }
-
-        /*koanify*/shouldFail/**/(ReadOnlyPropertyException) {
-            String.zero = '1'
-        }
     }
 
     @Test
@@ -121,19 +83,6 @@ class MetaClassMethodInjection extends MetaKoan {
     }
 
     @Test
-    void 'property can be added only to a specific object instance' () {
-        def str = 'Marcin'
-        str.metaClass.zero = '0'
-
-        /*koanify*/shouldNeverFail/**/(MissingPropertyException) {
-            'str.zero'
-        }
-        /*koanify*/shouldFail/**/(MissingPropertyException) {
-            'Gryszko'.zero
-        }
-    }
-
-    @Test
     void 'a new constructor can be added through the metaclass' () {
         String.metaClass.constructor << { int n ->
             /*koanify*/new String(n.toString());/**/
@@ -143,7 +92,7 @@ class MetaClassMethodInjection extends MetaKoan {
     }
 
     @Test
-    void 'an existing construct can be replaced by overriding it in the metaclass (yes it is possible in Groovy)' () {
+    void 'an existing constructor can be replaced by overriding it in the metaclass (yes it is possible in Groovy)' () {
         String.metaClass.constructor = { String s ->
             // You can still get a reference to the original constructor
             def originalConstructor = String.class.getConstructor(String)

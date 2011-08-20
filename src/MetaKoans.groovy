@@ -14,13 +14,14 @@ import org.junit.runners.Suite.SuiteClasses
     CompileTimeMixins,
     RuntimeMixins,
     MetaClassMethodInjection,
+    MetaClassPropertyInjection,
     MethodSynthesis])
 class MetaKoans {
     // In progress
+    // TODO Koans - 15, complete chapter
 
     // Backlog:
     // TODO Run koans with Groovy 1.8
-    // TODO Koans - 15, complete chapter (if applies)
     // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
     // TODO Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?
     // TODO Koans - AST transformations

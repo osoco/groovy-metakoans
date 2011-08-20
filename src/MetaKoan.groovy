@@ -1,6 +1,7 @@
 import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
 import org.junit.After
 import org.junit.Before
+import static org.junit.Assert.fail
 
 class MetaKoan {
     protected Map originalMetaClasses
@@ -42,7 +43,7 @@ class MetaKoan {
         }
 
         if (clazz.isInstance(th)) {
-            fail("Closure " + code + " should have never failed with an exception of type " + clazz.getName());
+            fail("It should have never failed with an exception of type " + clazz.getName());
         }
     }
 }
