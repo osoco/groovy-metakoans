@@ -18,7 +18,7 @@ target compileKoanEngine: '', {
 target compileKoans: '', {
     depends init
 
-    groovyc srcdir: "${basedir}/src", destdir: "${basedir}/target", {
+    groovyc srcdir: "${basedir}/koan_src", destdir: "${basedir}/target", {
         javac source: '1.6', target: '1.6'
     }
 }
