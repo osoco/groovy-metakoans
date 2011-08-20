@@ -15,16 +15,16 @@ import org.junit.runners.Suite.SuiteClasses
     RuntimeMixins,
     MetaClassMethodInjection,
     MetaClassPropertyInjection,
-    MethodSynthesis])
+    MethodSynthesis,
+    DynamicClasses])
 class MetaKoans {
-    // In progress
-    // TODO Koans - 15, complete chapter
-
     // Backlog:
     // TODO Run koans with Groovy 1.8
     // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
-    // TODO Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?
-    // TODO Koans - AST transformations
+
+    // Maybe:
+    // Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?
+    // Koans - AST transformations
 
     // Questions:
     // how HandleMetaClass and DelegatingMetaClass work? Why are they used instead of ExpandoMetaClass?
