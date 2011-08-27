@@ -2,36 +2,49 @@
 //includeTargets << gant.targets.Clean
 taskdef(name: 'groovyc',  classname: 'org.codehaus.groovy.ant.Groovyc')
 
-// TODO define target without the description
-target init: '', {
+target(name: 'init') {
     mkdir dir: "${basedir}/target"
 }
 
-// TODO define target without the description
-target compileKoanEngine: '', {
+target(name: 'compileKoanEngine') {
     depends init
 
     groovyc srcdir: "${basedir}/koan_engine", destdir: "${basedir}/target"
 }
 
-// TODO define target without the description
-target compileKoans: '', {
-    depends init
+target(name: 'compileProtoKoans') {
+    depends compileKoanEngine
 
-    groovyc srcdir: "${basedir}/koans_to_solve", destdir: "${basedir}/target", {
+    groovyc srcdir: "${basedir}/protokoans", destdir: "${basedir}/target", {
         javac source: '1.6', target: '1.6'
     }
 }
 
-// TODO define target without the description
-target makeKoans: '', {
+target(name: 'compileKoans') {
     depends compileKoanEngine
 
-    // TODO either implement it either as Groovy class or using built-in Ant targets
+    groovyc srcdir: "${basedir}/koans", destdir: "${basedir}/target", {
+        javac source: '1.6', target: '1.6'
+    }
+}
+
+target(name: 'makeKoans') {
+    copy(todir: "${basedir}/koans", overwrite: true) {
+        fileset dir: "${basedir}/protokoans", {
+            include name: '**/*.groovy'
+            include name: '**/*.java'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'gi'
+        }
+    }
 }
 
 target wayToEnlightment: 'Executes koans', {
-    depends compileKoanEngine, compileKoans
+    // TODO two modes: compile and execute koans sources or koans to solve
+
+    depends compileKoanEngine, compileProtoKoans
+    //depends compileKoanEngine, compileKoans
 
     junit printsummary: true, haltonfailure: true, {
         classpath {
