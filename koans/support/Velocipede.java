@@ -1,6 +1,9 @@
 package support;
 
 public class Velocipede {
+    // TODO add it with an AST transformation
+    protected static final String __ = "fill_me_in";
+
     private int gears = 1;
 
     public int getGears() {
