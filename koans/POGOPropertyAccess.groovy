@@ -30,7 +30,9 @@ class POGOPropertyAccess extends MetaKoan {
     void 'MissingPropertyException is raised if a property is not found neither in the class nor in the metaclass'() {
         def bike = new Bike()
 
-        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.frameSize }
+        shouldFail(/*koanify_as_class*/MissingPropertyException/**/) {
+            bike.frameSize
+        }
     }
 
     @Test
@@ -44,7 +46,9 @@ class POGOPropertyAccess extends MetaKoan {
     void 'propertyMissing is implemented but it should throw a MissingPropertyException if it cannot generate the property'() {
         def bike = new BikeWithPropertyMissing()
 
-        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.i }
+        shouldFail(/*koanify_as_class*/MissingPropertyException/**/) {
+            bike.i
+        }
         // Think: must propertyMissing throw a MissingPropertyException?
         // What would be the result if the propertyMissing implementation hadn't thrown MissingPropertyException?
     }
@@ -61,8 +65,12 @@ class POGOPropertyAccess extends MetaKoan {
     void 'getProperty and setProperty are overridden but they throw a MissingPropertyException if they cannot handle the unknown property'() {
         def bike = new BikeWithGetSetProperty()
 
-        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.horsepower }
-        shouldFail(/*koanify*/MissingPropertyException/**/) { bike.horsepower = 170 }
+        shouldFail(/*koanify_as_class*/MissingPropertyException/**/) {
+            bike.horsepower
+        }
+        shouldFail(/*koanify_as_class*/MissingPropertyException/**/) {
+            bike.horsepower = 170
+        }
     }
 
     @Test
