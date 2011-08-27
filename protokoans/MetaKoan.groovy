@@ -4,6 +4,8 @@ import org.junit.Before
 import static org.junit.Assert.fail
 
 class MetaKoan {
+    // TODO add it to Koan classes with an AST transformation?
+    protected static final __ = 'fill_me_in'
     protected Map originalMetaClasses
 
     @Before
