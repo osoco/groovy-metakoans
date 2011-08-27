@@ -10,7 +10,7 @@ class GroovyInterceptableMethodDispatch extends MetaKoan {
 
     @Test
     void 'GroovyInterceptable is a special case of GroovyObject'() {
-        assert GroovyObject.isAssignableFrom(/*koanify*/GroovyInterceptable/**/)
+        assert /*koanify_as_class*/GroovyObject/**/ in GroovyInterceptable.class.interfaces
     }
 
     @Test
