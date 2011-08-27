@@ -8,7 +8,7 @@ class POGOIntro extends MetaKoan {
         def bike = new Bike()
 
         assert bike instanceof Object
-        assert bike instanceof /*koanify_as_class*/GroovyObject/**/
+        assert /*koanify_as_class*/GroovyObject/**/ in bike.class.interfaces
     }
 
     @Test
