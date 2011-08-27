@@ -23,7 +23,7 @@ class POGOMethodDispatch extends MetaKoan {
 
     @Test
     void 'method added to the POGOs metaclass can be executed as if it was defined in the POGO'() {
-        Bike.metaClass.win = {'won!'}
+        Bike.metaClass.win = { 'won!' }
         def bike = new Bike()
 
         assert bike./*koanify*/win()/**/ == 'won!'
@@ -31,7 +31,7 @@ class POGOMethodDispatch extends MetaKoan {
 
     @Test
     void 'method overridden in the metaclass takes precedence over the method defined in the class'() {
-        Bike.metaClass.ring = {'ring! (but differently)'}
+        Bike.metaClass.ring = { 'ring! (but differently)' }
         def bike = new Bike()
 
         assert bike.ring() == /*koanify*/'ring! (but differently)'/**/
@@ -48,7 +48,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'MissingMethodException is raised if a method is not found neither in the class nor in the metaclass'() {
         def bike = new Bike()
 
-        shouldFail(/*koanify*/MissingMethodException/**/) { bike.consumePetrol() }
+        shouldFail(/*koanify_as_ex*/MissingMethodException/**/) { bike.consumePetrol() }
     }
 
     @Test
@@ -62,7 +62,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'methodMissing is implemented but it throws a MissingMethodException if it cannot handle the unknown method'() {
         def bike = new BikeWithMethodMissing()
 
-        shouldFail(/*koanify*/MissingMethodException/**/) { bike.bell() }
+        shouldFail(/*koanify_as_ex*/MissingMethodException/**/) { bike.bell() }
         // Think: must methodMissing throw a MissingMethodException?
         // What would be the result if the methodMissing implementation hadn't thrown MissingMethodException?
     }
@@ -78,7 +78,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'invokeMethod is overridden but it should throw a MissingMethodException if it cannot handle the unknown method'() {
         def bike = new BikeWithInvokeMethod()
 
-        shouldFail(/*koanify*/MissingMethodException/**/) { bike.beRover() }
+        shouldFail(/*koanify_as_ex*/MissingMethodException/**/) { bike.beRover() }
     }
 
     @Test
@@ -86,8 +86,10 @@ class POGOMethodDispatch extends MetaKoan {
         def bike = new BikeWithMethodMissingThrowingEx()
         bike.metaClass.win = { 'won!' }
 
-        /*koanify*/shouldFail/**/(BikeBrokenException) { bike.beRover() }
-        /*koanify*/shouldNeverFail/**/(BikeBrokenException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(BikeBrokenException) {
+            bike.beRover()
+        }
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(BikeBrokenException) {
             bike.ring()
             bike.win()
         }
@@ -97,8 +99,10 @@ class POGOMethodDispatch extends MetaKoan {
     void 'only methodMissing is executed if both methodMissing and invokeMethod are implemented'() {
         def bike = new BikeWithMethodMissingAndInvokeMethod()
 
-        assert bike./*koanify*/ringLoud()/**/ == 'ring loud!'
-        shouldFail(/*koanify*/MissingMethodException/**/) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+            bike.ringLoud()
+        }
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {
             bike.rideOnTheMoon()
         }
     }
@@ -110,7 +114,7 @@ class POGOMethodDispatch extends MetaKoan {
         }
         def bike = new BikeWithInvokeMethod()
 
-        assert bike./*koanify*/rideOnTheMoon()/**/ == 'dynamic behaviour canceled'
+        assert bike.rideOnTheMoon() == /*koanify*/'dynamic behaviour canceled'/**/
         // Think: what is the behaviour for other non-special methods defined both in the class and in the metaclass?
     }
 

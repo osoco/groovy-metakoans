@@ -2,6 +2,8 @@ taskdef name: 'groovyc', classname: 'org.codehaus.groovy.ant.Groovyc'
 
 final STUDENT_KOANS_PROJECT_DIR = "${basedir}/../groovy-metakoans"
 
+def patternFor(token) { '/\\*' + token + '\\*/.*?/\\*\\*/' }
+
 target name: 'init', {
     mkdir dir: STUDENT_KOANS_PROJECT_DIR
 }
@@ -19,12 +21,6 @@ target name: 'makeKoans', {
         fileset dir: "${basedir}/koan_engine", {
             include name: '**/*'
         }
-        filterchain {
-            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
-        }
-        filterchain {
-            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
-        }
     }
 
     copy todir: "${STUDENT_KOANS_PROJECT_DIR}/koans", {
@@ -33,10 +29,10 @@ target name: 'makeKoans', {
             include name: '**/*.java'
         }
         filterchain {
-            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
-        }
-        filterchain {
-            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
+            replaceregex pattern: patternFor('koanify'), replace: '__', flags: 'g'
+            replaceregex pattern: patternFor('koanify_as_class'), replace: 'FillMeIn', flags: 'g'
+            replaceregex pattern: patternFor('koanify_as_ex'), replace: 'FillMeInException', flags: 'g'
+            replaceregex pattern: patternFor('koanify_as_should_fail_or_not'), replace: '__should_this_block_fail_or_not__', flags: 'g'
         }
     }
 }

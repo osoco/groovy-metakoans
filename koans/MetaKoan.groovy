@@ -6,6 +6,10 @@ import static org.junit.Assert.fail
 class MetaKoan {
     // TODO add it to Koan classes with an AST transformation?
     protected static final __ = 'fill_me_in'
+    protected static final __should_this_block_fail_or_not__(Class exClass, Closure code) {
+        fail("should this block fail or not fail with the exception ${exClass.simpleName}?")
+    }
+
     protected Map originalMetaClasses
 
     @Before
@@ -32,20 +36,35 @@ class MetaKoan {
         GroovySystem.metaClassRegistry.setMetaClass(clazz, emc)
     }
 
-    protected shouldFail = new GroovyTestCase().&shouldFail
+    protected void shouldFail(Class exClass, Closure code) {
+        Throwable th = null
+        try {
+            code.call()
+        } catch (GroovyRuntimeException gre) {
+            th = ScriptBytecodeAdapter.unwrap(gre)
+        } catch (Throwable e) {
+            th = e
+        }
 
-    protected shouldNeverFail(Class clazz, Closure code) {
-        Throwable th = null;
+        if (!th) {
+            fail("Closure should have failed with an exception of type ${exClass.name}")
+        } else if (!exClass.isInstance(th)) {
+            fail("Closure should have failed with an exception of type ${exClass.name}, instead got Exception ${th}")
+        }
+    }
+
+    protected void shouldNeverFail(Class exClass, Closure code) {
+        Throwable th = null
         try {
             code.call();
         } catch (GroovyRuntimeException gre) {
-            th = ScriptBytecodeAdapter.unwrap(gre);
+            th = ScriptBytecodeAdapter.unwrap(gre)
         } catch (Throwable e) {
-            th = e;
+            th = e
         }
 
-        if (clazz.isInstance(th)) {
-            fail("It should have never failed with an exception of type " + clazz.getName());
+        if (exClass.isInstance(th)) {
+            fail("It should have never failed with an exception of type ${exClass.name}")
         }
     }
 }
