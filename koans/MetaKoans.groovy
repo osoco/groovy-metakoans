@@ -20,7 +20,6 @@ import org.junit.runners.Suite.SuiteClasses
 class MetaKoans {
     // Backlog:
     // TODO Run koans with Groovy 1.8
-    // TODO Transform koans into cloze tests (substitute /*koanify*//**/ markers with __)
 
     // Maybe:
     // Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?
