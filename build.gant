@@ -35,7 +35,10 @@ target(name: 'makeKoans') {
             include name: '**/*.java'
         }
         filterchain {
-            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'gi'
+            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
         }
     }
 }

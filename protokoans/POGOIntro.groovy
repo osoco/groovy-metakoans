@@ -8,7 +8,7 @@ class POGOIntro extends MetaKoan {
         def bike = new Bike()
 
         assert bike instanceof Object
-        assert bike instanceof /*koanify*/GroovyObject/**/
+        assert bike instanceof /*koanify_as_class*/GroovyObject/**/
     }
 
     @Test
@@ -31,8 +31,8 @@ class POGOIntro extends MetaKoan {
     void 'every POGO has a metaclass with a default implementation'() {
         def bike = new Bike()
 
-        assert bike.metaClass instanceof /*koanify*/MetaClass/**/
-        assert bike.metaClass.class == /*koanify*/HandleMetaClass/**/
+        assert bike.metaClass instanceof /*koanify_as_class*/MetaClass/**/
+        assert bike.metaClass.class == /*koanify_as_class*/HandleMetaClass/**/
     }
 
     @Test

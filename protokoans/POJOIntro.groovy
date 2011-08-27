@@ -7,8 +7,8 @@ class POJOIntro extends MetaKoan {
     void 'every POJO has a metaclass too'() {
         def velocipede = new Velocipede()
 
-        assert velocipede.metaClass instanceof /*koanify*/MetaClass/**/
-        assert velocipede.metaClass.class == /*koanify*/HandleMetaClass/**/
+        assert velocipede.metaClass instanceof /*koanify_as_class*/MetaClass/**/
+        assert velocipede.metaClass.class == /*koanify_as_class*/HandleMetaClass/**/
     }
 
     @Test

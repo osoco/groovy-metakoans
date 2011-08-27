@@ -130,7 +130,7 @@ class MOPReflection extends MetaKoan {
     void 'closure is treated as a MOP meta property'() {
         def bike = new Bike()
 
-        assert Bike.metaClass.hasProperty(bike, 'ride').getProperty(bike) instanceof /*koanify*/Closure/**/
+        assert Bike.metaClass.hasProperty(bike, 'ride').getProperty(bike) instanceof /*koanify_as_class*/Closure/**/
     }
 
     @Test
