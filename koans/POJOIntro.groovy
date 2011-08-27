@@ -14,7 +14,7 @@ class POJOIntro extends MetaKoan {
     @Test
     void 'POJO methods can be invoked dynamically'() {
         def velocipede = new Velocipede()
-        def method = /*koanify*/"ring"/**/
+        def method = /*koanify*/'ring'/**/
 
         velocipede."${method}"() == 'ring!'
     }
@@ -22,7 +22,7 @@ class POJOIntro extends MetaKoan {
     @Test
     void 'POJO properties can be accessed dynamically with dot or map notation'() {
         def velocipede = new Velocipede()
-        def property = /*koanify*/"gears"/**/
+        def property = /*koanify*/'gears'/**/
 
         velocipede."${property}" == 1
         velocipede["${property}"] == 1
