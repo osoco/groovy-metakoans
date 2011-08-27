@@ -1,57 +1,36 @@
-// TODO where to get gant.targets.Clean in Linux?
-//includeTargets << gant.targets.Clean
 taskdef(name: 'groovyc',  classname: 'org.codehaus.groovy.ant.Groovyc')
 
+def TARGET_DIR = "${basedir}/target"
+
+target(name: 'clean') {
+    delete dir: TARGET_DIR
+    delete file: '.progress'
+}
+
 target(name: 'init') {
-    mkdir dir: "${basedir}/target"
+    mkdir dir: TARGET_DIR
 }
 
 target(name: 'compileKoanEngine') {
     depends init
 
-    groovyc srcdir: "${basedir}/koan_engine", destdir: "${basedir}/target"
-}
-
-target(name: 'compileProtoKoans') {
-    depends compileKoanEngine
-
-    groovyc srcdir: "${basedir}/protokoans", destdir: "${basedir}/target", {
-        javac source: '1.6', target: '1.6'
-    }
+    groovyc srcdir: "${basedir}/koan_engine", destdir: TARGET_DIR
 }
 
 target(name: 'compileKoans') {
     depends compileKoanEngine
 
-    groovyc srcdir: "${basedir}/koans", destdir: "${basedir}/target", {
+    groovyc srcdir: "${basedir}/koans", destdir: TARGET_DIR, {
         javac source: '1.6', target: '1.6'
     }
 }
 
-target(name: 'makeKoans') {
-    copy(todir: "${basedir}/koans", overwrite: true) {
-        fileset dir: "${basedir}/protokoans", {
-            include name: '**/*.groovy'
-            include name: '**/*.java'
-        }
-        filterchain {
-            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
-        }
-        filterchain {
-            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
-        }
-    }
-}
-
 target wayToEnlightment: 'Executes koans', {
-    // TODO two modes: compile and execute koans sources or koans to solve
-
-    depends compileKoanEngine, compileProtoKoans
-    //depends compileKoanEngine, compileKoans
+    depends compileKoanEngine, compileKoans
 
     junit printsummary: true, haltonfailure: true, {
         classpath {
-            pathelement location: "${basedir}/target"
+            pathelement location: TARGET_DIR
         }
         test name: 'MetaKoans'
     }

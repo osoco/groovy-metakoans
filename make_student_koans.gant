@@ -1,0 +1,44 @@
+taskdef name: 'groovyc', classname: 'org.codehaus.groovy.ant.Groovyc'
+
+final STUDENT_KOANS_PROJECT_DIR = "${basedir}/../groovy-metakoans"
+
+target name: 'init', {
+    mkdir dir: STUDENT_KOANS_PROJECT_DIR
+}
+
+target(name: 'cleanKoans') {
+    delete dir: STUDENT_KOANS_PROJECT_DIR 
+}
+
+target name: 'makeKoans', {
+    depends init
+
+    copy file: 'build.gant', todir: STUDENT_KOANS_PROJECT_DIR
+
+    copy todir: "${STUDENT_KOANS_PROJECT_DIR}/koan_engine", {
+        fileset dir: "${basedir}/koan_engine", {
+            include name: '**/*'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
+        }
+    }
+
+    copy todir: "${STUDENT_KOANS_PROJECT_DIR}/koans", {
+        fileset dir: "${basedir}/koans", {
+            include name: '**/*.groovy'
+            include name: '**/*.java'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify\\*/.*?/\\*\\*/', replace: '__', flags: 'g'
+        }
+        filterchain {
+            replaceregex pattern: '/\\*koanify_as_class\\*/.*?/\\*\\*/', replace: 'FillMeIn', flags: 'g'
+        }
+    }
+}
+
+setDefaultTarget(makeKoans)
