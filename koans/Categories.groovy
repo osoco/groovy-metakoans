@@ -16,14 +16,7 @@ class BrokenStringUtils {
 
 class AutoCloseableReader {
     static withStream(Reader self, Closure closure) {
-        /*koanify*/closure(self)
-        self.close()/**/
-    }
-}
-
-class ToStringAugmenter {
-    static String toString(self) {
-        "||${self.toString()}||"
+        /*koanify_as_implement_me*/closure(self); self.close()/**/
     }
 }
 
@@ -68,8 +61,8 @@ class Categories extends MetaKoan {
 
     @Test
     void 'you can use a category to implement a template method'() {
+        // Implement AutoCloseableReader.withStream so it performs operations from the closure and finally closes the stream
         use(AutoCloseableReader) {
-            // Implement AutoCloseableReader.withStream so it performs operations from the closure and finally closes the stream
             def reader = new StringReader('abc')
             def c
 
@@ -83,16 +76,6 @@ class Categories extends MetaKoan {
         }
     }
 
-    @Test
-    void 'categories can override existing methods and thus implement AOP advices'() {
-        def s = 'a string'
-
-        assert s.toString() == /*koanify*/'a string'/**/
-
-        use(ToStringAugmenter) {
-            s.toString() == /*koanify*/'||a string||'/**/
-        }
-    }
 
     @Test
     void 'you can use _use_ method to add new behaviour with AST transformation categories like with classic categories'() {
