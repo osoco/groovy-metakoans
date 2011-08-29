@@ -44,16 +44,16 @@ class GroovyAOP extends MetaKoan {
     void 'use GroovyInterceptable to implement an around advice for a POGO'() {
         def controller = new LoggingController()
         assert controller.list() == 'article list'
-        assert controller.logger == [ /*koanify*/'method list started'/**/, /*koanify*/'defined'/**/, /*koanify*/'method list finished'/**/, /*koanify*/'result: article list'/**/]
+        assert controller.logger == [/*koanify*/'method list started'/**/, /*koanify*/'defined'/**/, /*koanify*/'method list finished'/**/, /*koanify*/'result: article list'/**/]
 
         controller.logger = []
         assert controller.save() == 'saving an article'
-        assert controller.logger == [ /*koanify*/'method save started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method save finished'/**/, /*koanify*/'result: saving an article'/**/]
+        assert controller.logger == [/*koanify*/'method save started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method save finished'/**/, /*koanify*/'result: saving an article'/**/]
 
         controller.logger = []
-        Controller.metaClass.remove = { return 'article removed' }
+        Controller.metaClass.remove = { 'article removed' }
         assert controller.remove() == 'article removed'
-        assert controller.logger == [ /*koanify*/'method remove started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method remove finished'/**/, /*koanify*/'result: article removed']
+        assert controller.logger == [/*koanify*/'method remove started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method remove finished'/**/, /*koanify*/'result: article removed'/**/]
 
         // Hint: if a method has not been found, route the call to the metaclass
     }
@@ -79,7 +79,7 @@ class GroovyAOP extends MetaKoan {
 
         def controller = new LoggingController()
         assert controller.list() == 'article list'
-        assert controller.logger == [ /*koanify*/'method list started'/**/, /*koanify*/'defined'/**/, /*koanify*/'method list finished'/**/, /*koanify*/'result: article list'/**/]
+        assert controller.logger == [/*koanify*/'method list started'/**/, /*koanify*/'defined'/**/, /*koanify*/'method list finished'/**/, /*koanify*/'result: article list'/**/]
 
         controller.logger = []
         assert controller.save() == 'saving an article'
@@ -88,7 +88,7 @@ class GroovyAOP extends MetaKoan {
         controller.logger = []
         Controller.metaClass.remove = { return 'article removed' }
         assert controller.remove() == 'article removed'
-        assert controller.logger == [/*koanify*/'method remove started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method remove finished'/**/, /*koanify*/'result: article removed']
+        assert controller.logger == [/*koanify*/'method remove started'/**/, /*koanify*/'missing'/**/, /*koanify*/'method remove finished'/**/, /*koanify*/'result: article removed'/**/]
 
         // Bonus point: spot 2 differences between the advice implementation as GroovyInterceptable and MetaClass' invokeMethod
     }
@@ -98,10 +98,11 @@ class GroovyAOP extends MetaKoan {
         Velocipede.metaClass.invokeMethod = { String name, args ->
             MetaMethod mm = Velocipede.metaClass.getMetaMethod(name, args)
             if (mm) {
+                // Hint: delegate points to the current Velocipede instance
                 return /*koanify*/"invoked: ${mm.invoke(delegate, args)}"/**/
             }
 
-            return 'not implemented'
+            'not implemented'
         }
 
         def velocipede = new Velocipede()
