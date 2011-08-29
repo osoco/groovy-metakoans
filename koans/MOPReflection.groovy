@@ -11,11 +11,11 @@ class MOPReflection extends MetaKoan {
 
     @Test
     void 'every metaclass implements MetaObjectProtocol (MOP)'()  {
-        assert MetaObjectProtocol.isAssignableFrom(/*koanify*/MetaClass/**/)
+        assert /*koanify_as_class*/MetaObjectProtocol/**/ in MetaClass.class.interfaces
     }
 
     @Test
-    void 'object Class is not MetaClass but it can be obtained from it'() {
+    void 'object class can be obtained from the MetaClass'() {
         assert (Bike.class == Bike.metaClass) == /*koanify*/false/**/
         assert (Bike.class == Bike.metaClass.theClass) == /*koanify*/true/**/
     }
@@ -46,13 +46,13 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'closure is not treated as a MOP meta method'() {
+    void 'closure is not treated as a MOP MetaMethod'() {
         assert Bike.metaClass.getMetaMethod('ride') == /*koanify*/null/**/
     }
 
     @Test
-    void 'method added to metaclass is a MOP meta method (although it is closure)'() {
-        Bike.metaClass.win = {'won!'}
+    void 'method added to metaclass is a MOP MetaMethod (although it is closure)'() {
+        Bike.metaClass.win = { -> 'won!' }
         def bike = new Bike()
 
         MetaMethod mm = bike.metaClass.getMetaMethod('win')
@@ -60,7 +60,7 @@ class MOPReflection extends MetaKoan {
         assert mm.returnType == /*koanify*/Object/**/
         assert mm.parameterTypes*.theClass == /*koanify*/[]/**/
 
-        assert bike.metaClass.methods.findAll({ it.name == 'win' }).size() == /*koanify*/2/**/
+        assert bike.metaClass.methods.findAll({ it.name == 'win' }).size() == /*koanify*/1/**/
         assert bike.metaClass.metaMethods.findAll({ it.name == 'win' }).size() == /*koanify*/0/**/
         // getMetaMethods yields the list of methods added from the DefaultGroovyMethods
     }
@@ -68,15 +68,18 @@ class MOPReflection extends MetaKoan {
     @Test
     void 'MOP provides information about declared static methods'() {
         MetaMethod mm = Bike.metaClass.getStaticMetaMethod('hasHandleBar', [] as Object[])
-        assert mm.static == /*koanify*/true/**/
+
+        assert mm.static == /*koanify*/true/**/        // You can omit arguments if the method doesn't have any
+        assert Bike.metaClass.getStaticMetaMethod('hasHandleBar') != null == /*koanify*/true/**/
     }
 
     @Test
     void 'respondsTo finds out if an object would respond to a method call'() {
-        Bike.metaClass.win = {'won!'}
+        Bike.metaClass.win = { 'won!' }
         def bike = new Bike()
 
         assert Bike.metaClass.respondsTo(bike, 'ring').size() == /*koanify*/2/**/
+        // You can check overloaded methods
         assert Bike.metaClass.respondsTo(/*koanify*/bike/**/, /*koanify*/'ring'/**/, [] as Object[]).size() == /*koanify*/1/**/
         assert Bike.metaClass.respondsTo(/*koanify*/bike/**/, /*koanify*/'ring'/**/, Object).size() == /*koanify*/1/**/
     }
@@ -123,14 +126,15 @@ class MOPReflection extends MetaKoan {
         assert mp.type == /*koanify*/Object/**/
         assert mp.getProperty(bike) == /*koanify*/24/**/
 
-        assert /*koanify*/'gears'/**/ in Bike.metaClass.getProperties()*.name
+        assert 'gears' in Bike.metaClass./*koanify*/properties/**/*.name
     }
 
     @Test
     void 'closure is treated as a MOP meta property'() {
         def bike = new Bike()
+        MetaProperty mp = Bike.metaClass.hasProperty(bike, 'ride')
 
-        assert Bike.metaClass.hasProperty(bike, 'ride').getProperty(bike) instanceof /*koanify_as_class*/Closure/**/
+        assert mp.getProperty(bike) instanceof /*koanify_as_class*/Closure/**/
     }
 
     @Test
@@ -158,7 +162,6 @@ class MOPReflection extends MetaKoan {
         assert mm.invoke(velocipede) == /*koanify*/'ring!'/**/
 
         assert Velocipede.metaClass.methods.findAll({ it.name == 'ring' }).size() == /*koanify*/1/**/
-
         assert Velocipede.metaClass.respondsTo(velocipede, 'ring').size() == /*koanify*/1/**/
     }
 }
