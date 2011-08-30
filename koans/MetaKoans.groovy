@@ -18,5 +18,4 @@ import org.junit.runners.Suite.SuiteClasses
     MethodSynthesis,
     DynamicClasses])
 class MetaKoans {
-    // TODO Run koans with Groovy 1.8
 }

@@ -81,7 +81,7 @@ class MessageRenderer {
 }
 
 class ProgressBarRenderer {
-    private static final CONSOLE_WIDTH = 79
+    private static final CONSOLE_WIDTH = 65
     private static final PROGRESS_LINE_START = '['
     private static final PROGRESS_LINE_END = ']'
     private static final COMPLETED_CHAR = '+'

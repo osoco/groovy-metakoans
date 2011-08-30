@@ -28,7 +28,7 @@ target(name: 'compileKoans') {
 target wayToEnlightment: 'Executes koans', {
     depends compileKoanEngine, compileKoans
 
-    junit printsummary: true, haltonfailure: true, {
+    junit printsummary: 'withOutAndErr', haltonfailure: true, {
         classpath {
             pathelement location: TARGET_DIR
         }
