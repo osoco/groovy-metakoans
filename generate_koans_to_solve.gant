@@ -1,29 +1,29 @@
 taskdef name: 'groovyc', classname: 'org.codehaus.groovy.ant.Groovyc'
 
-final STUDENT_KOANS_PROJECT_DIR = "${basedir}/../groovy-metakoans"
+final KOANS_TO_SOLVE_PROJECT_DIR = "${basedir}/../groovy-metakoans-to-solve"
 
 def patternFor(token) { '/\\*' + token + '\\*/.*?/\\*\\*/' }
 
 target name: 'init', {
-    mkdir dir: STUDENT_KOANS_PROJECT_DIR
+    mkdir dir: KOANS_TO_SOLVE_PROJECT_DIR
 }
 
 target(name: 'cleanKoans') {
-    delete dir: STUDENT_KOANS_PROJECT_DIR 
+    delete dir: KOANS_TO_SOLVE_PROJECT_DIR
 }
 
 target name: 'makeKoans', {
     depends init
 
-    copy file: 'build.gant', todir: STUDENT_KOANS_PROJECT_DIR
+    copy file: 'build.gant', todir: KOANS_TO_SOLVE_PROJECT_DIR
 
-    copy todir: "${STUDENT_KOANS_PROJECT_DIR}/koan_engine", {
+    copy todir: "${KOANS_TO_SOLVE_PROJECT_DIR}/koan_engine", {
         fileset dir: "${basedir}/koan_engine", {
             include name: '**/*'
         }
     }
 
-    copy todir: "${STUDENT_KOANS_PROJECT_DIR}/koans", {
+    copy todir: "${KOANS_TO_SOLVE_PROJECT_DIR}/koans", {
         fileset dir: "${basedir}/koans", {
             include name: '**/*.groovy'
             include name: '**/*.java'
