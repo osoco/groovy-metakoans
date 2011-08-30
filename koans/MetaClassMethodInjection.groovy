@@ -18,16 +18,15 @@ class MetaClassMethodInjection extends MetaKoan {
     @Test
     void 'a new instance method can be added through the metaclass' () {
         Integer.metaClass.fizzBuzz = {
-            def answer = ''
+            def answer = delegate.toString()
             if (delegate % 3 == 0) answer = 'Fizz'
-            if (delegate % 5 == 0) answer += 'Buzz'
+            if (delegate % 5 == 0) answer = 'Buzz'
             answer
         }
 
-        assert 1.fizzBuzz() == /*koanify*/''/**/
+        assert 1.fizzBuzz() == /*koanify*/'1'/**/
         assert 3.fizzBuzz() == /*koanify*/'Fizz'/**/
         assert 5.fizzBuzz() == /*koanify*/'Buzz'/**/
-        assert 15.fizzBuzz() == /*koanify*/'FizzBuzz'/**/
     }
 
     @Test
@@ -35,7 +34,7 @@ class MetaClassMethodInjection extends MetaKoan {
         assert 2.power(2) == /*koanify*/4/**/
 
         Integer.metaClass.power = { Integer exponent ->
-            /*koanify*/delegate/**/
+            /*koanify*/delegate/**/ // Hint: return the number
         }
 
         assert 4.power(15) == 4
@@ -73,7 +72,7 @@ class MetaClassMethodInjection extends MetaKoan {
         1.metaClass.isEven = { delegate % 2 == 0 }
 
         assert 1.isEven() == /*koanify*/false/**/
-        shouldFail(/*koanify*/MissingMethodException/**/) {
+        shouldFail(/*koanify_as_ex*/MissingMethodException/**/) {
             2.isEven()
         }
 
@@ -107,13 +106,16 @@ class MetaClassMethodInjection extends MetaKoan {
         Integer.metaClass.isEven = { delegate % 2 == 0 }
 
         assert 1.isEven() == false
-        /*koanify*/shouldFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {
             1L.isEven()
         }
 
         /*koanify*/Number/**/.metaClass.isEven = { delegate % 2 == 0 }
 
-        2L.isEven() == /*koanify*/true/**/
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+            2L.isEven()
+            1.0D.isEven()
+        }
     }
 
     @Test
@@ -124,11 +126,11 @@ class MetaClassMethodInjection extends MetaKoan {
             delegate[pos2] = elem
         }
 
-        /*koanify*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
             [1, 2].swap(0, 1)
         }
 
-        /*koanify*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
             new LinkedList([0, 1]).swap(0, 1)
         }
     }
