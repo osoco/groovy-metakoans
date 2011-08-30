@@ -46,7 +46,7 @@ class MetaClassPropertyInjection extends MetaKoan {
         }
 
         String.metaClass.static./*koanify*/getZero/**/ = { '0' }
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingPropertyException) {
+        shouldNeverFail(MissingPropertyException) {
             String.zero
         }
 
