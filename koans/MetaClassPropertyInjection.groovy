@@ -41,16 +41,16 @@ class MetaClassPropertyInjection extends MetaKoan {
     void 'a static attribute must be added as a property through the metaclass' () {
         String.metaClass.static.zero = '0'
 
-        /*koanify*/shouldFail/**/(MissingPropertyException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingPropertyException) {
             String.zero
         }
 
         String.metaClass.static./*koanify*/getZero/**/ = { '0' }
-        /*koanify*/shouldNeverFail/**/(MissingPropertyException) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingPropertyException) {
             String.zero
         }
 
-        /*koanify*/shouldFail/**/(ReadOnlyPropertyException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(ReadOnlyPropertyException) {
             String.zero = '1'
         }
     }
@@ -60,10 +60,10 @@ class MetaClassPropertyInjection extends MetaKoan {
         def str = 'Marcin'
         str.metaClass.zero = '0'
 
-        /*koanify*/shouldNeverFail/**/(MissingPropertyException) {
-            'str.zero'
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingPropertyException) {
+            str.zero
         }
-        /*koanify*/shouldFail/**/(MissingPropertyException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingPropertyException) {
             'Gryszko'.zero
         }
     }
