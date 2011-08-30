@@ -1,6 +1,7 @@
 import org.junit.Before
 import org.junit.Test
 import support.Bike
+import support.Velocipede
 
 class BikeWithCountingMethodMissing {
     def numberOfCreatedMethods = 0
@@ -34,7 +35,7 @@ class MethodSynthesis extends MetaKoan {
     }
 
     @Test
-    void 'you can create methods on the fly using methodMissing'() {
+    void 'you can create methods on the fly using methodMissing por POGOs'() {
         Bike.metaClass.methodMissing = bikeMethodMissing
 
         def bike = new Bike()
@@ -44,6 +45,20 @@ class MethodSynthesis extends MetaKoan {
 
         /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
             bike.goToMadrid()
+        }
+    }
+
+    @Test
+    void 'method synthesis using methodMissing works for POJOs too'() {
+        Velocipede.metaClass.methodMissing = bikeMethodMissing
+
+        def velocipede = new Velocipede()
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {
+            velocipede.goingToMadrid()
+        }
+
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+            velocipede.goToMadrid()
         }
     }
 
