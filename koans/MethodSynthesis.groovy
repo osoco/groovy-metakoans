@@ -38,11 +38,11 @@ class MethodSynthesis extends MetaKoan {
         Bike.metaClass.methodMissing = bikeMethodMissing
 
         def bike = new Bike()
-        /*koanify*/shouldFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {
             bike.goingToMadrid()
         }
 
-        /*koanify*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
             bike.goToMadrid()
         }
     }
@@ -58,10 +58,10 @@ class MethodSynthesis extends MetaKoan {
         def bike2 = new Bike()
         bike.metaClass = emc
 
-        /*koanify*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
             bike.goToMadrid()
         }
-        /*koanify*/shouldFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {
             bike2.goToMadrid()
         }
     }
@@ -86,29 +86,30 @@ class MethodSynthesis extends MetaKoan {
 
         assert bike.goToMadrid() == 'going to Madrid with 24 gears'
         bike.goToMadrid()
+        bike.goToWarsaw() == 'going to Warsaw with 24 gears'
         bike.goToWarsaw()
 
-        assert numberOfCreatedMethods == /*koanify*/2/**/
+        assert numberOfCreatedMethods == 2
     }
 
     @Test
     void 'caching works only if the metaclass is an instance of ExpandoMetaClass'() {
-        def bike = new BikeWithCountingMethodMissing()
-
         // What is the 'global' metaclass of BikeWithCountingMethodMissing?
         assert BikeWithCountingMethodMissing.metaClass instanceof ExpandoMetaClass == /*koanify*/false/**/
 
+        // Your task: cache generated methods in BikeWithCountingMethodMissing.methodMissing
+        def bike = new BikeWithCountingMethodMissing()
         bike.goToMadrid()
         bike.goToMadrid()
-
-        // Did the metaclass of BikeWithCountingMethodMissing change?
-        assert BikeWithCountingMethodMissing.metaClass instanceof ExpandoMetaClass == /*koanify*/true/**/
         assert bike.numberOfCreatedMethods == /*koanify*/2/**/
 
         def anotherBike = new BikeWithCountingMethodMissing()
         anotherBike.goToMadrid()
         anotherBike.goToMadrid()
         assert anotherBike.numberOfCreatedMethods == /*koanify*/0/**/
+
+        // Did the metaclass of BikeWithCountingMethodMissing change?
+        assert BikeWithCountingMethodMissing.metaClass instanceof ExpandoMetaClass == /*koanify*/true/**/
 
         // Think: what type of metaclas enables method caching?
         // Do you know why we got this number of created methods for anotherBike?
