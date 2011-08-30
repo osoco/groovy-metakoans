@@ -24,5 +24,4 @@ class DynamicClasses {
 
         assert bike./*koanify*/frameSize/**/ == 56
     }
-
 }
