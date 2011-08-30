@@ -30,6 +30,24 @@ class MetaClassMethodInjection extends MetaKoan {
     }
 
     @Test
+    void 'delegate in a method added to the metaclass refers to the current instance'() {
+        Integer.metaClass.delegate = {
+            delegate
+        }
+
+        assert 1.delegate() == /**koanify*/1/**/
+    }
+
+    @Test
+    void 'owner in a method added to the metaclass refers to the instance where the closure was declared'() {
+        Integer.metaClass.owner = {
+            owner
+        }
+
+        assert 1.owner() == /**koanify*/this/**/
+    }
+
+    @Test
     void 'an existing instance method can be replaced by overriding it in the metaclass' () {
         assert 2.power(2) == /*koanify*/4/**/
 
