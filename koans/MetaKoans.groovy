@@ -18,18 +18,5 @@ import org.junit.runners.Suite.SuiteClasses
     MethodSynthesis,
     DynamicClasses])
 class MetaKoans {
-    // Backlog:
     // TODO Run koans with Groovy 1.8
-
-    // Maybe:
-    // Koans about groovy.lang.MetaClassRegistry? How it works? What is it for?
-    // Koans - AST transformations
-
-    // Questions:
-    // how HandleMetaClass and DelegatingMetaClass work? Why are they used instead of ExpandoMetaClass?
-    // why internal classes dont have metaClass?
-
-    // Reference:
-    // http://en.wikipedia.org/wiki/Metaobject
-    // http://groovy.codehaus.org/ExpandoMetaClass
 }
