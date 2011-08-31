@@ -107,6 +107,24 @@ img {
       The Koans assume that you have some basic practical experience with Groovy. If not, I recommend you personally <a href="http://pragprog.com/book/vslg/programming-groovy">Programming Groovy</a> by Venkat Subramaniam. Although it covers Groovy 1.6, you find on 300 pages everything about Groovy from first steps with the language to advanced metaprogramming.
     </p>
       
+    <h2>Installation</h2>
+    <ol>
+      <li>Download and install <a href="http://groovy.codehaus.org/Download">Groovy</a> (see above for supported versions). If you are on Windows and use installer, don't forget to mark Gant in modules selections. Check your installation with:
+        <pre>groovy -version</pre>
+      </li>
+      <li>If you are on Linux/MacOSX install <a href="http://gant.codehaus.org/">Gant</a>. Make sure you pick up a release that corresponds to the Groovy version (if not, strange things will happen). Check your installation with:
+        <pre>gant -version</pre>
+      </li>
+      <li>Clone the Metakoans GitHub repository or download the koans as zip/tar archive (as explained below).</li>
+      <li>The downloaded sources contain already solved metakoans (don't look into koans directory!) that student metakoans are generated from. To generate your working copy (assuming your are in the proto-metakoans directory), type:
+        <pre>gant -f generate_koans_to_solve.gant</pre>
+      The student koans are generated in the <code>../groovy-metakoans-to-solve</code>
+      <li>
+        Now you can start working with metakoans. Go to <code>groovy-metakoans-to-solve</code> directory and type to start your way to meta-enlightment:
+        <pre>gant</pre>
+      </li>
+    </ol>
+    
     <hr />
     
     <h2>Download Source</h2>
@@ -116,8 +134,13 @@ img {
       <a href="http://github.com/osoco/groovy-metakoans/tarball/master">tar</a> formats.
     </p>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a> by running:
-        <pre>\$ git clone git://github.com/osoco/grails-equals-hashcode</pre>
+        <pre>git clone git://github.com/osoco/groovy-metakoans</pre>
     </p>
+
+    <hr />
+    
+    <h2>Feedback</h2>
+    Found an issue? You liked the Metakoans? Drop me a line to <a href="mailto:marcin@grysz.com">marcin@grysz.com</a> or <a href="http://twitter.com/mgryszko">@mgryszko</a>
   </div> 
 </body>
 </html>
