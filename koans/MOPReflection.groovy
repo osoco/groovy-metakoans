@@ -56,7 +56,7 @@ class MOPReflection extends MetaKoan {
         def bike = new Bike()
 
         MetaMethod mm = bike.metaClass.getMetaMethod('win')
-        mm.declaringClass.theClass == /*koanify*/Bike/**/
+        assert mm.declaringClass.theClass == /*koanify*/Bike/**/
         assert mm.returnType == /*koanify*/Object/**/
         assert mm.parameterTypes*.theClass == /*koanify*/[]/**/
 
