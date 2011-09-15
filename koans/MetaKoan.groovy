@@ -64,7 +64,7 @@ class MetaKoan {
         }
 
         if (exClass.isInstance(th)) {
-            fail("It should have never failed with an exception of type ${exClass.name}")
+            fail("Closure should have NEVER failed with an exception of type ${exClass.name}")
         }
     }
 }
