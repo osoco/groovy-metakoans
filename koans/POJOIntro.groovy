@@ -26,5 +26,6 @@ class POJOIntro extends MetaKoan {
 
         velocipede."${property}" == 1
         velocipede["${property}"] == 1
+        velocipede[property] == 1
     }
 }
