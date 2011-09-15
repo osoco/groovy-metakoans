@@ -86,7 +86,8 @@ class MOPReflection extends MetaKoan {
 
     @Test
     void 'getMetaMethod and respondsTo work also with concrete values as parameter descriptors'() {
-        assert Bike.metaClass.getMetaMethod(/*koanify*/'ring'/**/, 3) != /*koanify*/null/**/
+        // Hint: fill the method name that you think accepts '3' as input parameter
+        assert Bike.metaClass.getMetaMethod(/*koanify*/'ring'/**/, 3) != null
         assert Bike.metaClass.respondsTo(new Bike(), /*koanify*/'ring'/**/, 3).size() == /*koanify*/1/**/
     }
 
