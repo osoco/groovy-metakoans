@@ -89,7 +89,7 @@ class POGOMethodDispatch extends MetaKoan {
         /*koanify_as_should_fail_or_not*/shouldFail/**/(BikeBrokenException) {
             bike.beRover()
         }
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(BikeBrokenException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(BikeBrokenException) {
             bike.ring()
             bike.win()
         }
@@ -99,7 +99,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'only methodMissing is executed if both methodMissing and invokeMethod are implemented'() {
         def bike = new BikeWithMethodMissingAndInvokeMethod()
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             bike.ringLoud()
         }
         /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {

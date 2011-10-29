@@ -43,7 +43,7 @@ class MethodSynthesis extends MetaKoan {
             bike.goingToMadrid()
         }
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             bike.goToMadrid()
         }
     }
@@ -57,7 +57,7 @@ class MethodSynthesis extends MetaKoan {
             velocipede.goingToMadrid()
         }
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             velocipede.goToMadrid()
         }
     }
@@ -73,7 +73,7 @@ class MethodSynthesis extends MetaKoan {
         def bike2 = new Bike()
         bike.metaClass = emc
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             bike.goToMadrid()
         }
         /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingMethodException) {

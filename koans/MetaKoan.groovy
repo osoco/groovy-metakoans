@@ -53,7 +53,7 @@ class MetaKoan {
         }
     }
 
-    protected void shouldNeverFail(Class exClass, Closure code) {
+    protected void shouldNotFail(Class exClass, Closure code) {
         Throwable th = null
         try {
             code.call();

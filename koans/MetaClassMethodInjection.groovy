@@ -130,7 +130,7 @@ class MetaClassMethodInjection extends MetaKoan {
 
         /*koanify*/Number/**/.metaClass.isEven = { delegate % 2 == 0 }
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             2L.isEven()
             1.0D.isEven()
         }
@@ -144,11 +144,11 @@ class MetaClassMethodInjection extends MetaKoan {
             delegate[pos2] = elem
         }
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             [1, 2].swap(0, 1)
         }
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingMethodException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingMethodException) {
             new LinkedList([0, 1]).swap(0, 1)
         }
     }

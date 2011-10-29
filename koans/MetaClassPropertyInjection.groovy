@@ -46,7 +46,7 @@ class MetaClassPropertyInjection extends MetaKoan {
         }
 
         String.metaClass.static./*koanify*/getZero/**/ = { '0' }
-        shouldNeverFail(MissingPropertyException) {
+        shouldNotFail(MissingPropertyException) {
             String.zero
         }
 
@@ -60,7 +60,7 @@ class MetaClassPropertyInjection extends MetaKoan {
         def str = 'Marcin'
         str.metaClass.zero = '0'
 
-        /*koanify_as_should_fail_or_not*/shouldNeverFail/**/(MissingPropertyException) {
+        /*koanify_as_should_fail_or_not*/shouldNotFail/**/(MissingPropertyException) {
             str.zero
         }
         /*koanify_as_should_fail_or_not*/shouldFail/**/(MissingPropertyException) {
