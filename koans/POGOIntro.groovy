@@ -5,7 +5,7 @@ import support.Bike
 class POGOIntro extends MetaKoan {
     @Test
     void 'any object defined in Groovy (POGO) implements implicitly GroovyObject interface'() {
-	// Hint: check the support package for different bike and velocipede classes
+	    // Hint: check the support package for different bike and velocipede classes
         def bike = new Bike()
 
         assert bike instanceof Object
