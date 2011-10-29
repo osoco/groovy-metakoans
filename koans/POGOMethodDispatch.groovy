@@ -108,24 +108,18 @@ class POGOMethodDispatch extends MetaKoan {
     }
 
     @Test
-    void 'invokeMethod overridden in the metaclass takes precedence over invokeMethod defined in the class'() {
+    void 'invokeMethod and methodMissing overridden in the metaclass takes precedence over methods defined in the class'() {
         BikeWithInvokeMethod.metaClass.invokeMethod = { String name, args ->
             'dynamic behaviour canceled'
         }
-        def bike = new BikeWithInvokeMethod()
-
-        assert bike.rideOnTheMoon() == /*koanify*/'dynamic behaviour canceled'/**/
-        // Think: what is the behaviour for other non-special methods defined both in the class and in the metaclass?
-    }
-
-    @Test
-    void 'methodMissing overridden in the metaclass takes precedence over methodMissing defined in the class'() {
         BikeWithMethodMissing.metaClass.methodMissing = { String name, args ->
             'from metaclass'
         }
-        def bike = new BikeWithMethodMissing()
+        def bikeWithInvokeMethod = new BikeWithInvokeMethod()
+        def bikeWithMethodMissing = new BikeWithMethodMissing()
 
-        assert bike.rideOnTheMoon() == /*koanify*/'from metaclass'/**/
+        assert bikeWithInvokeMethod.rideOnTheMoon() == /*koanify*/'dynamic behaviour canceled'/**/
+        assert bikeWithMethodMissing.rideOnTheMoon() == /*koanify*/'from metaclass'/**/
         // Think: what is the behaviour for other non-special methods defined both in the class and in the metaclass?
     }
 }
