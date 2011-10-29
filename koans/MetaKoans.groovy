@@ -2,7 +2,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(KoansSuite)
-@SuiteClasses([POGOIntro,
+@SuiteClasses([
+    Tutorial,
+    POGOIntro,
     POGOMethodDispatch,
     GroovyInterceptableMethodDispatch,
     POJOIntro,
@@ -16,6 +18,7 @@ import org.junit.runners.Suite.SuiteClasses
     MetaClassMethodInjection,
     MetaClassPropertyInjection,
     MethodSynthesis,
-    DynamicClasses])
+    DynamicClasses
+])
 class MetaKoans {
 }
