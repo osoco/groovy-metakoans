@@ -1,0 +1,1 @@
+Your progress: ${completed} of ${total} koans.

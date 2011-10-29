@@ -33,6 +33,7 @@ class MessageRenderer {
     private Template finalMessageTmpl
     private Template passedMessageTmpl
     private Template failureMessageTmpl
+    private Template progressMessageTmpl
     private Template encouragementTmpl
 
     def initialize() {
@@ -40,6 +41,7 @@ class MessageRenderer {
         finalMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/final_message.txt"))
         passedMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/passed_message.txt"))
         failureMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/failure_message.txt"))
+        progressMessageTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/progress_message.txt"))
         encouragementTmpl = templateEngine.createTemplate(new File("${TMPL_DIR}/encouragement.txt"))
     }
 
@@ -72,6 +74,11 @@ class MessageRenderer {
         }
     }
 
+    def printProgress(completed, total) {
+        def binding = [completed: completed, total: total]
+        println progressMessageTmpl.make(binding)
+    }
+
     def printEncouragement() {
         def quotes = new File("${TMPL_DIR}/quotes.txt").readLines()
         def quote = quotes[new Random().nextInt(quotes.size())]
@@ -87,7 +94,7 @@ class ProgressBarRenderer {
     private static final COMPLETED_CHAR = '+'
     private static final REMAINING_CHAR = '-'
 
-    def printProgressBar(int completed, int total) {
+    def printProgressBar(completed, total) {
         def percentageCompleted = format('%3d%%', percentage(completed, total))
 
         def progressLineWidth = CONSOLE_WIDTH - (PROGRESS_LINE_START.length() + PROGRESS_LINE_END.length()) -
@@ -122,7 +129,7 @@ class Sensei extends RunListener {
 
     private Failure lastFailure
 
-    Sensei(int totalKoans, RunNotifier notifier) {
+    Sensei(totalKoans, RunNotifier notifier) {
         this.totalKoans = totalKoans
         this.notifier = notifier
     }
@@ -171,7 +178,7 @@ class Sensei extends RunListener {
     }
 
     private onKoanFailure() {
-        messageRenderer.printFailureMessage(lastFailure, getTraceLineFromSystemProperties())
+        messageRenderer.printFailureMessage(lastFailure, traceLineFromSystemProperties)
         messageRenderer.printEncouragement()
         notifier.pleaseStop()
     }
@@ -185,6 +192,10 @@ class Sensei extends RunListener {
         } else {
             trace as Integer
         }
+    }
+
+    def printProgress() {
+        messageRenderer.printProgress(koansPassed, totalKoans)
     }
 
     def printProgressBar() {
@@ -227,6 +238,7 @@ class KoansSuite extends Suite {
         catch (StoppedByUserException e) {
         }
         finally {
+            sensei.printProgress()
             sensei.printProgressBar()
             sensei.printFinalMessageIfCompleted()
         }
