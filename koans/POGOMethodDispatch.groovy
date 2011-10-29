@@ -52,7 +52,7 @@ class POGOMethodDispatch extends MetaKoan {
     }
 
     @Test
-    void 'methodMissing is implemented and executed if the called method is not found'() {
+    void 'if methodMissing is implemented it is executed if the called method is not found'() {
         def bike = new BikeWithMethodMissing()
 
         assert bike./*koanify*/ringLoudly()/**/ == 'ring loudly!'
@@ -68,7 +68,7 @@ class POGOMethodDispatch extends MetaKoan {
     }
 
     @Test
-    void 'invokeMethod is overridden and executed if the called method is not found'() {
+    void 'if invokeMethod is overridden it is executed if the called method is not found'() {
         def bike = new BikeWithInvokeMethod()
 
         assert bike./*koanify*/rideOnTheMoon()/**/ == 'riding onthemoon!'
