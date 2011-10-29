@@ -1,2 +1,2 @@
-You have put another pebble on your way to enlightenment:
+OK. You have put another pebble on your way to enlightenment:
     ${description.className} - ${description.methodName}
