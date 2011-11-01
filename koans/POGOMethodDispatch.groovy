@@ -18,7 +18,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'method declared directly in the class is executed (no surprise :))'() {
         def bike = new Bike()
 
-        assert bike./*koanify*/ring()/**/ == 'ring!'
+        assert bike./*koanify*/ring/**/() == 'ring!'
     }
 
     @Test
@@ -26,7 +26,7 @@ class POGOMethodDispatch extends MetaKoan {
         Bike.metaClass.win = { 'won!' }
         def bike = new Bike()
 
-        assert bike./*koanify*/win()/**/ == 'won!'
+        assert bike./*koanify*/win/**/() == 'won!'
     }
 
     @Test
@@ -41,7 +41,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'property that is a closure is executed like a normal method'() {
         def bike = new Bike()
 
-        assert bike./*koanify*/ride()/**/ == 'riding!'
+        assert bike./*koanify*/ride/**/() == 'riding!'
     }
 
     @Test
@@ -55,7 +55,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'if methodMissing is implemented it is executed if the called method is not found'() {
         def bike = new BikeWithMethodMissing()
 
-        assert bike./*koanify*/ringLoudly()/**/ == 'ring loudly!'
+        assert bike./*koanify*/ringLoudly/**/() == 'ring loudly!'
     }
 
     @Test
@@ -71,7 +71,7 @@ class POGOMethodDispatch extends MetaKoan {
     void 'if invokeMethod is overridden it is executed if the called method is not found'() {
         def bike = new BikeWithInvokeMethod()
 
-        assert bike./*koanify*/rideOnTheMoon()/**/ == 'riding onthemoon!'
+        assert bike./*koanify*/rideOnTheMoon/**/() == 'riding onthemoon!'
     }
 
     @Test

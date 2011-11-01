@@ -2,7 +2,8 @@ package support;
 
 public class Velocipede {
     // TODO add it with an AST transformation
-    protected static final String __ = "fill_me_in";
+    public static final String __ = "fill_me_in";
+    public static Object __() { return "fill_me_in"; }
 
     private int gears = 1;
 

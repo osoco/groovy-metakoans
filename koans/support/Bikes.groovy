@@ -4,7 +4,8 @@ class BikeBrokenException extends RuntimeException {
 
 class Bike {
     // TODO add it with an AST transformation
-    protected static final __ = 'fill_me_in'
+    final __ = 'fill_me_in'
+    def __() { 'fill_me_in' }
 
     static hasHandleBar() {
         true

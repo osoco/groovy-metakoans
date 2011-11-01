@@ -20,6 +20,6 @@ class POJOMethodDispatch extends MetaKoan {
         Velocipede.metaClass.win = { 'won!' }
         def velocipede = new Velocipede()
 
-        assert velocipede./*koanify*/win()/**/ == 'won!'
+        assert velocipede./*koanify*/win/**/() == 'won!'
     }
 }

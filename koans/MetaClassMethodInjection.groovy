@@ -35,7 +35,7 @@ class MetaClassMethodInjection extends MetaKoan {
             delegate
         }
 
-        assert 1.delegate() == /**koanify*/1/**/
+        assert 1.delegate() == /*koanify*/1/**/
     }
 
     @Test
@@ -44,7 +44,7 @@ class MetaClassMethodInjection extends MetaKoan {
             owner
         }
 
-        assert 1.owner() == /**koanify*/this/**/
+        assert 1.owner() == /*koanify*/this/**/
     }
 
     @Test

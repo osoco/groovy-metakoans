@@ -69,7 +69,7 @@ class MOPReflection extends MetaKoan {
     void 'MOP provides information about declared static methods'() {
         MetaMethod mm = Bike.metaClass.getStaticMetaMethod('hasHandleBar', [] as Object[])
 
-        assert mm.static == /*koanify*/true/**/        // You can omit arguments if the method doesn't have any
+        assert mm.static == /*koanify*/true/**/ // You can omit arguments if the method doesn't have any
         assert Bike.metaClass.getStaticMetaMethod('hasHandleBar') != null == /*koanify*/true/**/
     }
 
