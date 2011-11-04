@@ -2,10 +2,10 @@ import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
 import org.junit.After
 import org.junit.Before
 import static org.junit.Assert.fail
+import ast.KoanPlaceholders
 
+@KoanPlaceholders
 class MetaKoan {
-    // TODO add it to Koan classes with an AST transformation?
-    protected static final __ = 'fill_me_in'
     protected static final __should_this_block_fail_or_not__(Class exClass, Closure code) {
         fail("should this block fail or not fail with the exception ${exClass.simpleName}?")
     }

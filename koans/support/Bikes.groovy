@@ -1,12 +1,12 @@
 package support
+
+import ast.KoanPlaceholders
+
 class BikeBrokenException extends RuntimeException {
 }
 
+@KoanPlaceholders
 class Bike {
-    // TODO add it with an AST transformation
-    final __ = 'fill_me_in'
-    def __() { 'fill_me_in' }
-
     static hasHandleBar() {
         true
     }

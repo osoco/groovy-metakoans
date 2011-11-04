@@ -1,7 +1,6 @@
 package support;
 
 public class Velocipede {
-    // TODO add it with an AST transformation
     public static final String __ = "fill_me_in";
     public static Object __() { return "fill_me_in"; }
 
