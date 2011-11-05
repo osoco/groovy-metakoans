@@ -21,6 +21,11 @@ public class KoanPlaceholdersAstTransformation implements ASTTransformation {
 
     @Override
     void visit(ASTNode[] nodes, SourceUnit sourceUnit) {
+        if (!nodes) return
+        if (nodes.size() < 2) return
+        if (!(nodes[0] instanceof AnnotationNode)) return
+        if (!(nodes[1] instanceof ClassNode)) return
+
         ClassNode classNode = nodes[1]
         classNode.addMethod(buildMethodPlaceholder())
         classNode.addField(buildFieldPlaceholder(classNode))
