@@ -110,7 +110,7 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'MOP allows you to get a set a property'() {
+    void 'MOP allows you to get and set a property'() {
         def bike = new Bike()
 
         assert Bike.metaClass.getProperty(bike, 'gears') == /*koanify*/24/**/
@@ -144,7 +144,7 @@ class MOPReflection extends MetaKoan {
     }
 
     @Test
-    void 'MOP allows you to get a set a member variable of an object (without going through the getter and setter)'() {
+    void 'MOP allows you to get and set a member variable of an object (without going through the getter and setter)'() {
         def bike = new Bike()
 
         assert Bike.metaClass.getAttribute(bike, 'raeder') == /*koanify*/2/**/
