@@ -2,7 +2,7 @@ import org.codehaus.groovy.runtime.ScriptBytecodeAdapter
 import org.junit.After
 import org.junit.Before
 import static org.junit.Assert.fail
-import ast.KoanPlaceholders
+import transform.KoanPlaceholders
 
 @KoanPlaceholders
 class MetaKoan {

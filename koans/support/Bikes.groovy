@@ -1,6 +1,6 @@
 package support
 
-import ast.KoanPlaceholders
+import transform.KoanPlaceholders
 
 class BikeBrokenException extends RuntimeException {
 }
